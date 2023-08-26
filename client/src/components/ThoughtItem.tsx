@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { Thought } from "../types";
 
 type Props = {
   thought: Thought;
-  handleLike: (thoughtId: string) => void;
+  handleLike: (thoughtId: string, add: boolean) => void;
 };
 
 const ThoughtItem = ({ thought, handleLike }: Props) => {
+  const [liked, setLiked] = useState(false);
+
+  const toggleLikeThought = (thoughtId: string) => {
+    const like = !liked;
+    handleLike(thoughtId, like);
+    setLiked(like);
+  };
+
   return (
     <li className="border border-purple-400 rounded-md p-2">
       <header>
@@ -30,7 +39,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
         <button
           className="w-5 h-5 hover:opacity-75 transition-opacity"
           onClick={() => {
-            handleLike(thought.id);
+            toggleLikeThought(thought.id);
           }}
         >
           <img src="./public/celebrate.png" alt="celebrate" />

@@ -36,7 +36,24 @@ const api = {
   },
   likeThought: async (id: string): Promise<response> => {
     try {
-      const resp: response["message"] = await fetch(`/api/${id}`, {
+      const resp: response["message"] = await fetch(`/api/${id}/like`, {
+        method: "PUT",
+      }).then((res) => res.json());
+      return {
+        message: resp,
+        status: 200,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        status: 500,
+        message: "Error liking thought: " + error,
+      };
+    }
+  },
+  dislikeThought: async (id: string): Promise<response> => {
+    try {
+      const resp: response["message"] = await fetch(`/api/${id}/dislike`, {
         method: "PUT",
       }).then((res) => res.json());
       return {

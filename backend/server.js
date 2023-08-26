@@ -19,7 +19,13 @@ app.post('/api', (req, res) => {
     res.status(201).json({ message: 'Reflection created successfully' });
 });
 
-app.put(`/api/:thoughtId`, (req, res) => {
+app.put(`/api/:thoughtId/like`, (req, res) => {
+    console.log(req.body)
+    // actualizar en la db el thought que le llega en el body, probablemente porque aumentaron los likes
+    res.status(200).json({ message: 'Reflection updated successfully' });
+});
+
+app.put(`/api/:thoughtId/dislike`, (req, res) => {
     console.log(req.body)
     // actualizar en la db el thought que le llega en el body, probablemente porque aumentaron los likes
     res.status(200).json({ message: 'Reflection updated successfully' });
