@@ -1,34 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import UserForm, { type User } from "./components/UserForm";
 
 type response = {
   message: string;
 };
 
-interface TodoForm extends HTMLFormElement {
-  todo: HTMLInputElement;
+interface thoughtForm extends HTMLFormElement {
+  thought: HTMLInputElement;
 }
 
-type Todo = {
+type Thought = {
   id: number;
+  username: string;
+  country: string;
   description: string;
+  date: Date;
 };
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [thoughts, setThoughts] = useState<Thought[]>([]);
+  const [user, setUser] = useState<User | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent<TodoForm>) => {
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const user = await JSON.parse(localStorage.getItem("user") || "{}");
+        setUser(user);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getUser();
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
-    const inputValue = event.currentTarget.todo.value.trim();
+    const inputValue = event.currentTarget.thought.value.trim();
 
     if (!inputValue) return;
 
-    const todo = {
+    const thought = {
       id: new Date().getTime(),
       description: inputValue,
+      country: user?.country || "Unknown",
+      username: user?.name || "Anonymous",
+      date: new Date(),
     };
 
-    setTodos([...todos, todo]);
-    event.currentTarget.todo.value = "";
+    setThoughts([...thoughts, thought]);
+    event.currentTarget.thought.value = "";
 
     try {
       const resp: response = await fetch("/api", {
@@ -36,7 +57,7 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(todo),
+        body: JSON.stringify(thought),
       }).then((res) => res.json());
 
       console.log(resp.message);
@@ -45,39 +66,67 @@ function App() {
     }
   };
 
+  if (!localStorage.getItem("user")) {
+    return <UserForm setUser={setUser} />;
+  }
+
   return (
     <>
-      <h1 className="text-center text-xl font-bold mt-5">
-        To-do but with backend server!
-      </h1>
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mt-5">Reflectify</h1>
+        <p className="italic">
+          {user?.name
+            ? `Hi ${user.name}, share your reflection or thought with the world!`
+            : "Share your reflection or thought with the world!"}
+        </p>
+      </div>
       <form
         action=""
         onSubmit={handleSubmit}
         className="flex flex-row gap-2 p-4 max-w-sm m-auto"
       >
-        <label htmlFor="todoInput">
+        <label htmlFor="thoughtInput">
           <input
-            name="todo"
-            id="todoInput"
+            name="thought"
+            id="thoughtInput"
             type="text"
-            placeholder="Create new todo..."
+            placeholder="Share a reflexion..."
             className="border border-purple-400 rounded-md p-2"
           />
         </label>
 
         <button type="submit" className=" bg-purple-600 rounded-md p-2 ">
-          Create
+          Share
         </button>
       </form>
 
-      {todos.length > 0 && (
+      {thoughts.length > 0 && (
         <ul className="flex flex-col gap-2 p-4 mt-5  max-w-sm m-auto">
-          {todos.map((todo) => (
+          {thoughts.map((thought) => (
             <li
-              key={todo.id}
+              key={thought.id}
               className="border border-purple-400 rounded-md p-2"
             >
-              {todo.description}
+              <header>
+                <p>
+                  ✦ <span className="font-bold">{thought.username}</span>{" "}
+                  reflected:
+                </p>
+              </header>
+              <p className=" bg-slate-700 shadow border border-transparent p-2 rounded-md mt-1">
+                {thought.description}
+              </p>
+
+              <footer className="flex justify-around items-center mt-1">
+                <p className="italic text-gray-400 text-sm">
+                  from {thought.country}
+                </p>
+
+                <p className="italic text-sm text-gray-400">
+                  at {thought.date.toLocaleTimeString()},{" "}
+                  {thought.date.toLocaleDateString()}
+                </p>
+              </footer>
             </li>
           ))}
         </ul>
