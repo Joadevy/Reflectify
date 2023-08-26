@@ -13,8 +13,8 @@ app.use(express.json());
 // });
 
 app.post('/api', (req, res) => {
-    console.log(req.body.description)
-    res.status(201).json({ message: 'Todo created successfully`' });
+    console.log(req.body)
+    res.status(201).json({ message: 'Reflection created successfully`' });
 });
 
 app.listen(5000, () => console.log("Server started"))

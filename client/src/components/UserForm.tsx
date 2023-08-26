@@ -1,33 +1,29 @@
+import { User } from "../types";
+import InputFormItem from "./InputFormItem";
+
 interface TodoForm extends HTMLFormElement {
   todo: HTMLInputElement;
 }
-
-export type User = {
-  id: number;
-  name: string;
-  country: string;
-};
 
 type Props = {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-const capitalize = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
+const capitalize = (str: string) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 function UserForm({ setUser }: Props) {
   const handleSubmit = async (event: React.FormEvent<TodoForm>) => {
     event.preventDefault();
-    const username = event.currentTarget.username.value.trim();
-    const country = event.currentTarget.country.value.trim();
+    const username = capitalize(event.currentTarget.username.value.trim());
+    const country = capitalize(event.currentTarget.country.value.trim());
 
     if (!username || !country) return;
 
     const user: User = {
-      id: new Date().getTime(),
-      name: capitalize(username),
-      country: capitalize(country),
+      id: crypto.randomUUID(),
+      name: username,
+      country: country,
     };
 
     try {
@@ -53,27 +49,19 @@ function UserForm({ setUser }: Props) {
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 p-4 max-w-sm m-auto"
       >
-        <label htmlFor="inputName" className="flex flex-col gap-1">
-          Name
-          <input
-            name="username"
-            id="inputName"
-            type="text"
-            placeholder="Type your name ..."
-            className="border border-purple-400 rounded-md p-2"
-          />
-        </label>
+        <InputFormItem
+          htmlFor="inputName"
+          name="username"
+          placeholder="Type your name ..."
+          label="Name"
+        />
 
-        <label htmlFor="inputCountry" className="flex flex-col gap-1">
-          Country
-          <input
-            name="country"
-            id="inputCountry"
-            type="text"
-            placeholder="Type your country ..."
-            className="border border-purple-400 rounded-md p-2"
-          />
-        </label>
+        <InputFormItem
+          htmlFor="inputCountry"
+          name="country"
+          placeholder="Type your country ..."
+          label="Country"
+        />
 
         <button type="submit" className=" bg-purple-600 rounded-md p-2 mt-2 ">
           Continue
