@@ -20,8 +20,8 @@ const ThoughtItem = ({ thought }: Props) => {
         <p className="italic text-gray-400 text-sm">from {thought.country}</p>
 
         <p className="italic text-sm text-gray-400">
-          at {thought.date.toLocaleTimeString()},{" "}
-          {thought.date.toLocaleDateString()}
+          at {new Date(thought.date).toLocaleTimeString()},{" "}
+          {new Date(thought.date).toLocaleDateString()}
         </p>
       </footer>
     </li>

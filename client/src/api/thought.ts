@@ -1,4 +1,4 @@
-import { Thought } from "../types";
+import type { Thought } from "../types";
 
 type response = {
   message: string;
@@ -21,6 +21,15 @@ const api = {
       return {
         message: "Error saving thought: " + error,
       };
+    }
+  },
+  getThoughts: async (): Promise<Thought[]> => {
+    try {
+      const resp: Thought[] = await fetch("/api").then((res) => res.json());
+      return resp;
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   },
 };

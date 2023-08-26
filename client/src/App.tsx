@@ -1,32 +1,33 @@
-import { useState } from "react";
 import UserForm from "./components/UserForm";
-import type { Thought } from "./types";
 import ThoughtItem from "./components/ThoughtItem";
 import InputFormItem from "./components/InputFormItem";
 import useUser from "./hooks/useUser";
 import api from "./api/thought";
+import useThought from "./hooks/useThought";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
 }
 
 function App() {
-  const [thoughts, setThoughts] = useState<Thought[]>([]);
+  const { thoughts, setThoughts } = useThought();
   const { user, setUser } = useUser();
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
-    const inputValue = event.currentTarget.thought.value.trim();
+    const inputThought = event.currentTarget.thought.value.trim();
 
-    if (!inputValue) return;
+    if (!inputThought) return;
 
     const thought = {
       id: crypto.randomUUID(),
-      description: inputValue,
+      description: inputThought,
       country: user?.country || "Unknown",
       username: user?.name || "Anonymous",
       date: new Date(),
     };
+
+    console.log(thought);
 
     setThoughts([thought, ...thoughts]);
     event.currentTarget.thought.value = "";
