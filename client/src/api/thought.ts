@@ -1,6 +1,7 @@
 import type { Thought } from "../types";
 
 type response = {
+  status: number;
   message: string;
 };
 
@@ -19,6 +20,7 @@ const api = {
     } catch (error) {
       console.error(error);
       return {
+        status: 500,
         message: "Error saving thought: " + error,
       };
     }
@@ -30,6 +32,23 @@ const api = {
     } catch (error) {
       console.error(error);
       return [];
+    }
+  },
+  likeThought: async (id: string): Promise<response> => {
+    try {
+      const resp: response["message"] = await fetch(`/api/${id}`, {
+        method: "PUT",
+      }).then((res) => res.json());
+      return {
+        message: resp,
+        status: 200,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        status: 500,
+        message: "Error liking thought: " + error,
+      };
     }
   },
 };

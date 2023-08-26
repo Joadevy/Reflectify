@@ -10,7 +10,7 @@ interface thoughtForm extends HTMLFormElement {
 }
 
 function App() {
-  const { thoughts, setThoughts } = useThought();
+  const { thoughts, setThoughts, handleLike } = useThought();
   const { user, setUser } = useUser();
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
@@ -25,6 +25,7 @@ function App() {
       country: user?.country || "Unknown",
       username: user?.name || "Anonymous",
       date: new Date(),
+      likes: 0,
     };
 
     console.log(thought);
@@ -69,7 +70,11 @@ function App() {
       {thoughts.length > 0 && (
         <ul className="flex flex-col gap-4 p-4 mt-5  max-w-sm m-auto">
           {thoughts.map((thought) => (
-            <ThoughtItem key={thought.id} thought={thought} />
+            <ThoughtItem
+              key={thought.id}
+              thought={thought}
+              handleLike={handleLike}
+            />
           ))}
         </ul>
       )}

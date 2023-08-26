@@ -4,6 +4,7 @@ export type Thought = {
   country: string;
   description: string;
   date: Date;
+  likes: number;
 };
 
 export type User = {

@@ -2,9 +2,10 @@ import { Thought } from "../types";
 
 type Props = {
   thought: Thought;
+  handleLike: (thoughtId: string) => void;
 };
 
-const ThoughtItem = ({ thought }: Props) => {
+const ThoughtItem = ({ thought, handleLike }: Props) => {
   return (
     <li className="border border-purple-400 rounded-md p-2">
       <header>
@@ -16,7 +17,7 @@ const ThoughtItem = ({ thought }: Props) => {
         {thought.description}
       </p>
 
-      <footer className="flex justify-around items-center mt-1">
+      <footer className="flex justify-between items-center mt-1">
         <p className="italic text-gray-400 text-sm">from {thought.country}</p>
 
         <p className="italic text-sm text-gray-400">
@@ -24,6 +25,18 @@ const ThoughtItem = ({ thought }: Props) => {
           {new Date(thought.date).toLocaleDateString()}
         </p>
       </footer>
+
+      <div className="flex gap-1 items-center mt-1 text-gray-400 text-sm">
+        <button
+          className="w-5 h-5 hover:opacity-75 transition-opacity"
+          onClick={() => {
+            handleLike(thought.id);
+          }}
+        >
+          <img src="./public/celebrate.png" alt="celebrate" />
+        </button>
+        <p>{thought.likes}</p>
+      </div>
     </li>
   );
 };
