@@ -35,7 +35,12 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
         </p>
       </footer>
 
-      <div className="flex gap-1 items-center mt-1 text-gray-400 text-sm">
+      <div
+        className={
+          "flex gap-1 items-center mt-1 text-gray-400 text-sm w-fit " +
+          (liked ? " " : "")
+        }
+      >
         <button
           className="w-5 h-5 hover:opacity-75 transition-opacity"
           onClick={() => {
@@ -44,7 +49,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
         >
           <img src="./public/celebrate.png" alt="celebrate" />
         </button>
-        <p>{thought.likes}</p>
+        <p className={liked ? "text-purple-400" : ""}>{thought.likes}</p>
       </div>
     </li>
   );
