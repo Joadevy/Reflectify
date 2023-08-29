@@ -1,6 +1,6 @@
 import type { Thought } from "../types";
 
-type response = {
+export type response = {
   ok?: boolean;
   data?: Thought;
   status: number;
@@ -27,13 +27,17 @@ const api = {
       };
     }
   },
-  getThoughts: async (): Promise<Thought[]> => {
+  getThoughts: async (): Promise<response> => {
     try {
-      const resp: Thought[] = await fetch("/api").then((res) => res.json());
+      const resp: response = await fetch("/api").then((res) => res.json());
       return resp;
     } catch (error) {
       console.error(error);
-      return [];
+      return {
+        status: 500,
+        ok: false,
+        message: "Error getting thoughts: " + error,
+      };
     }
   },
   likeThought: async (id: string): Promise<response> => {

@@ -24,17 +24,17 @@ export const createNewReflection = async (req, res) => {
 };
 
 export const getAllReflections = async (req, res) => {
-  // llamar a la db y traer los ultimos 20 thoughts por ej y mandarlos.
-  res.status(200).json([
-    {
-      country: "Argentina",
-      username: "Joaquin",
-      id: "12312321213",
-      date: "2023-08-26T20:18:48.895Z",
-      description: "Mensaje 'guardado', test desde server!",
-      likes: 0,
-    },
-  ]);
+  // Find 20 reflections by date, descending order (newest first)
+  try {
+    const tasks = await Reflection.find().sort({ date: -1 }).limit(20);
+
+    res.status(200).json({
+      ok: true,
+      data: tasks,
+    });
+  } catch {
+    res.status(500).json({ ok: false, message: "Error getting reflections" });
+  }
 };
 
 export const handleLikeReflection = async (req, res) => {

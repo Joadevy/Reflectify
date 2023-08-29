@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Thought } from "../types";
-import api from "../api/thought";
+import api, { response } from "../api/thought";
 
 const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
@@ -25,8 +25,8 @@ const useThought = () => {
 
   useEffect(() => {
     const fetchThoughts = async () => {
-      const response = await api.getThoughts();
-      setThoughts(response);
+      const response: response = await api.getThoughts();
+      setThoughts((response?.data ?? []) as Thought[]);
     };
 
     fetchThoughts();
