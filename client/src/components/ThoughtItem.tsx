@@ -47,7 +47,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
             toggleLikeThought(thought.id);
           }}
         >
-          <img src="./public/celebrate.png" alt="celebrate" />
+          <img src="/celebrate.png" alt="celebrate" />
         </button>
         <p className={liked ? "text-purple-400" : ""}>{thought.likes}</p>
       </div>
