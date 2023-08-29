@@ -1,6 +1,8 @@
 import type { Thought } from "../types";
 
 type response = {
+  ok?: boolean;
+  data?: Thought;
   status: number;
   message: string;
 };
@@ -18,10 +20,10 @@ const api = {
 
       return resp;
     } catch (error) {
-      console.error(error);
       return {
         status: 500,
         message: "Error saving thought: " + error,
+        ok: false,
       };
     }
   },
