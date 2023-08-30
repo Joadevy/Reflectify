@@ -10,27 +10,25 @@ export const createNewReflection = async (req, res) => {
     likes: req.body.likes,
   })
     .then((reflection) => {
-      console.log("Reflection created in db: ", reflection);
       res.status(201).json({
         ok: true,
         message: "Reflection created successfully",
         data: reflection,
       });
     })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ ok: false, message: "Error creating reflection" });
-    });
+    .catch(
+      res.status(500).json({ ok: false, message: "Error creating reflection" }),
+    );
 };
 
 export const getAllReflections = async (req, res) => {
   // Find 20 reflections by date, descending order (newest first)
   try {
-    const tasks = await Reflection.find().sort({ date: -1 }).limit(20);
+    const reflections = await Reflection.find().sort({ date: -1 }).limit(20);
 
     res.status(200).json({
       ok: true,
-      data: tasks,
+      data: reflections,
     });
   } catch {
     res.status(500).json({ ok: false, message: "Error getting reflections" });
@@ -38,13 +36,38 @@ export const getAllReflections = async (req, res) => {
 };
 
 export const handleLikeReflection = async (req, res) => {
-  console.log(req.body);
-  // actualizar en la db el thought que le llega en el body, probablemente porque aumentaron los likes
-  res.status(200).json({ message: "Reflection liked successfully" });
+  // quiero ver los url params
+  try {
+    const thought = await Reflection.findOneAndUpdate(
+      { id: req.params.reflectionId },
+      { $inc: { likes: 1 } },
+      { new: true },
+    );
+
+    res.status(200).json({
+      ok: true,
+      message: "Reflection liked successfully",
+      data: thought,
+    });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: "Error liking reflection" });
+  }
 };
 
 export const handleDislikeReflection = async (req, res) => {
-  console.log(req.body);
-  // actualizar en la db el thought que le llega en el body, probablemente porque aumentaron los likes
-  res.status(200).json({ message: "Reflection disliked successfully" });
+  try {
+    const thought = await Reflection.findOneAndUpdate(
+      { id: req.params.reflectionId },
+      { $inc: { likes: -1 } },
+      { new: true },
+    );
+
+    res.status(200).json({
+      ok: true,
+      message: "Reflection disliked successfully",
+      data: thought,
+    });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: "Error disliking reflection" });
+  }
 };

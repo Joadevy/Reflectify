@@ -1,7 +1,9 @@
 import express from "express";
 import "dotenv/config";
 const PORT = process.env.PORT || 4000;
+
 import mongoose from "mongoose";
+
 import newReflection from "./routes/api/newReflection.js";
 import getReflections from "./routes/api/getReflections.js";
 import dislikeReflection from "./routes/api/dislikeReflection.js";
@@ -14,6 +16,7 @@ mongoose
   .catch((error) => console.log(error.message));
 
 const app = express();
+
 app.use(express.json());
 
 // Routes
