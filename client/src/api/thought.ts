@@ -7,10 +7,12 @@ export type response = {
   message: string;
 };
 
+const baseUrl = "http://localhost:5173";
+
 const api = {
   saveThought: async (thought: Thought): Promise<response> => {
     try {
-      const resp: response = await fetch("/api", {
+      const resp: response = await fetch(`${baseUrl}/api`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +31,9 @@ const api = {
   },
   getThoughts: async (): Promise<response> => {
     try {
-      const resp: response = await fetch("/api").then((res) => res.json());
+      const resp: response = await fetch(`${baseUrl}/api`).then((res) =>
+        res.json(),
+      );
       return resp;
     } catch (error) {
       console.error(error);
@@ -42,9 +46,12 @@ const api = {
   },
   likeThought: async (id: string): Promise<response> => {
     try {
-      const resp: response["message"] = await fetch(`/api/${id}/like`, {
-        method: "PUT",
-      }).then((res) => res.json());
+      const resp: response["message"] = await fetch(
+        `${baseUrl}/api/${id}/like`,
+        {
+          method: "PUT",
+        },
+      ).then((res) => res.json());
       return {
         message: resp,
         status: 200,
@@ -59,9 +66,12 @@ const api = {
   },
   dislikeThought: async (id: string): Promise<response> => {
     try {
-      const resp: response["message"] = await fetch(`/api/${id}/dislike`, {
-        method: "PUT",
-      }).then((res) => res.json());
+      const resp: response["message"] = await fetch(
+        `${baseUrl}/api/${id}/dislike`,
+        {
+          method: "PUT",
+        },
+      ).then((res) => res.json());
       return {
         message: resp,
         status: 200,
