@@ -38,10 +38,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
       </footer>
 
       <div
-        className={
-          "flex gap-1 items-center mt-1 text-gray-400 text-sm w-fit " +
-          (liked ? " " : "")
-        }
+        className={"flex gap-1 items-center mt-1 text-gray-400 text-sm w-fit "}
       >
         <button
           className="w-5 h-5 hover:opacity-75 transition-opacity"
@@ -51,7 +48,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
         >
           <img src="/celebrate.png" alt="celebrate" />
         </button>
-        <p className={liked ? "text-purple-400" : ""}>{thought.likes}</p>
+        <p className={liked ? "text-purple-400" : ""}>{thought.likes.length}</p>
       </div>
     </li>
   );

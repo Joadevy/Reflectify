@@ -9,12 +9,13 @@ const useThought = () => {
     const response = add
       ? await api.likeThought(id)
       : await api.dislikeThought(id);
-    if (response.status === 200) {
+
+    if (response.ok) {
       const updatedThoughts = thoughts.map((thought) => {
         if (thought.id === id) {
           return {
             ...thought,
-            likes: thought.likes + (add ? 1 : -1),
+            likes: response.data?.likes ?? [],
           };
         }
         return thought;

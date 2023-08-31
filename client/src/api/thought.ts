@@ -1,10 +1,9 @@
 import type { Thought } from "../types";
 
 export type response = {
-  ok?: boolean;
+  ok: boolean;
   data?: Thought;
-  status: number;
-  message: string;
+  message?: string;
 };
 
 const baseUrl = "http://localhost:5173";
@@ -23,9 +22,8 @@ const api = {
       return resp;
     } catch (error) {
       return {
-        status: 500,
-        message: "Error saving thought: " + error,
         ok: false,
+        message: "Error saving thought: " + error,
       };
     }
   },
@@ -38,7 +36,6 @@ const api = {
     } catch (error) {
       console.error(error);
       return {
-        status: 500,
         ok: false,
         message: "Error getting thoughts: " + error,
       };
@@ -46,41 +43,29 @@ const api = {
   },
   likeThought: async (id: string): Promise<response> => {
     try {
-      const resp: response["message"] = await fetch(
-        `${baseUrl}/api/${id}/like`,
-        {
-          method: "PUT",
-        },
-      ).then((res) => res.json());
-      return {
-        message: resp,
-        status: 200,
-      };
+      const resp: response = await fetch(`${baseUrl}/api/${id}/like`, {
+        method: "PUT",
+      }).then((res) => res.json());
+      return resp;
     } catch (error) {
       console.error(error);
       return {
-        status: 500,
+        ok: false,
         message: "Error liking thought: " + error,
       };
     }
   },
   dislikeThought: async (id: string): Promise<response> => {
     try {
-      const resp: response["message"] = await fetch(
-        `${baseUrl}/api/${id}/dislike`,
-        {
-          method: "PUT",
-        },
-      ).then((res) => res.json());
-      return {
-        message: resp,
-        status: 200,
-      };
+      const resp: response = await fetch(`${baseUrl}/api/${id}/dislike`, {
+        method: "PUT",
+      }).then((res) => res.json());
+      return resp;
     } catch (error) {
       console.error(error);
       return {
-        status: 500,
-        message: "Error liking thought: " + error,
+        ok: false,
+        message: "Error disliking thought: " + error,
       };
     }
   },
