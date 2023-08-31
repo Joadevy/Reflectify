@@ -1,24 +1,24 @@
 import Reflection from "../models/Reflection.js";
 
 export const createNewReflection = async (req, res) => {
-  Reflection.create({
-    country: req.body.country,
-    username: req.body.username,
-    id: req.body.id,
-    date: req.body.date,
-    description: req.body.description,
-    likes: req.body.likes,
-  })
-    .then((reflection) => {
-      res.status(201).json({
-        ok: true,
-        message: "Reflection created successfully",
-        data: reflection,
-      });
-    })
-    .catch(
-      res.status(500).json({ ok: false, message: "Error creating reflection" }),
-    );
+  try {
+    const reflection = await Reflection.create({
+      country: req.body.country,
+      username: req.body.username,
+      id: req.body.id,
+      date: req.body.date,
+      description: req.body.description,
+      likes: req.body.likes,
+    });
+
+    res.status(201).json({
+      ok: true,
+      message: "Reflection created successfully",
+      data: reflection,
+    });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: "Error creating reflection" });
+  }
 };
 
 export const getAllReflections = async (req, res) => {
@@ -36,18 +36,19 @@ export const getAllReflections = async (req, res) => {
 };
 
 export const handleLikeReflection = async (req, res) => {
-  // quiero ver los url params
   try {
-    const thought = await Reflection.findOneAndUpdate(
+    // falta implementar el middleware para tener el id del usuario en la req
+    // { $addToSet: { likes: req.user.id } },
+    const reflection = await Reflection.findOneAndUpdate(
       { id: req.params.reflectionId },
-      { $inc: { likes: 1 } },
+      { $addToSet: { likes: "1" } },
       { new: true },
     );
 
     res.status(200).json({
       ok: true,
-      message: "Reflection liked successfully",
-      data: thought,
+      message: "Retflection liked successfully",
+      data: reflection,
     });
   } catch (error) {
     res.status(500).json({ ok: false, message: "Error liking reflection" });
@@ -56,16 +57,17 @@ export const handleLikeReflection = async (req, res) => {
 
 export const handleDislikeReflection = async (req, res) => {
   try {
-    const thought = await Reflection.findOneAndUpdate(
+    const reflection = await Reflection.findOneAndUpdate(
       { id: req.params.reflectionId },
-      { $inc: { likes: -1 } },
+      // falta implementar el middleware para tener el id del usuario en la req
+      { $pull: { likes: "1" } },
       { new: true },
     );
 
     res.status(200).json({
       ok: true,
       message: "Reflection disliked successfully",
-      data: thought,
+      data: reflection,
     });
   } catch (error) {
     res.status(500).json({ ok: false, message: "Error disliking reflection" });

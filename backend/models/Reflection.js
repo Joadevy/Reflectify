@@ -7,7 +7,7 @@ const ReflectionSchema = new Schema({
   username: { type: String, required: true },
   date: { type: Date, required: true },
   description: { type: String, required: true },
-  likes: { type: Number, required: true },
+  likes: { type: [String], default: [] },
 });
 
 const Reflection = mongoose.model("Reflection", ReflectionSchema);
