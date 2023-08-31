@@ -25,16 +25,13 @@ function App() {
       country: user?.country || "Unknown",
       username: user?.name || "Anonymous",
       date: new Date(),
-      likes: 0,
+      likes: [],
     };
-
-    console.log(thought);
 
     setThoughts([thought, ...thoughts]);
     event.currentTarget.thought.value = "";
 
-    const responseSaveThought = await api.saveThought(thought);
-    console.log(responseSaveThought);
+    await api.saveThought(thought);
   };
 
   if (!user) {
