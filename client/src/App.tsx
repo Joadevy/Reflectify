@@ -23,7 +23,7 @@ function App() {
       id: crypto.randomUUID(),
       description: inputThought,
       country: user?.country || "Unknown",
-      username: user?.name || "Anonymous",
+      username: user?.username || "Anonymous",
       date: new Date(),
       likes: [],
     };
@@ -43,8 +43,8 @@ function App() {
       <div className="text-center">
         <h1 className="text-4xl font-bold mt-5">Reflectify</h1>
         <p className="italic">
-          {user?.name
-            ? `Hi ${user.name}, share your reflection or thought with the world!`
+          {user?.username
+            ? `Hi ${user.username}, share your reflection or thought with the world!`
             : "Share your reflection or thought with the world!"}
         </p>
       </div>

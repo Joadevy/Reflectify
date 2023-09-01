@@ -1,8 +1,10 @@
-import { User } from "../types";
+import { User } from "../../types";
 import InputFormItem from "./InputFormItem";
 
-interface TodoForm extends HTMLFormElement {
-  todo: HTMLInputElement;
+interface LoginForm extends HTMLFormElement {
+  username: HTMLInputElement;
+  country: HTMLInputElement;
+  password: HTMLInputElement;
 }
 
 type Props = {
@@ -12,11 +14,12 @@ type Props = {
 const capitalize = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-function UserForm({ setUser }: Props) {
-  const handleSubmit = async (event: React.FormEvent<TodoForm>) => {
+function Login({ setUser }: Props) {
+  const handleSubmit = async (event: React.FormEvent<LoginForm>) => {
     event.preventDefault();
     const username = capitalize(event.currentTarget.username.value.trim());
     const country = capitalize(event.currentTarget.country.value.trim());
+    const pwd = event.currentTarget.password.value.trim();
 
     if (!username || !country) return;
 
@@ -24,7 +27,7 @@ function UserForm({ setUser }: Props) {
       id: crypto.randomUUID(),
       username: username,
       country: country,
-      password: "",
+      password: pwd,
     };
 
     try {
@@ -58,13 +61,6 @@ function UserForm({ setUser }: Props) {
         />
 
         <InputFormItem
-          htmlFor="inputPwd"
-          name="password"
-          placeholder="Type your password ..."
-          label="Password"
-        />
-
-        <InputFormItem
           htmlFor="inputCountry"
           name="country"
           placeholder="Type your country ..."
@@ -79,4 +75,4 @@ function UserForm({ setUser }: Props) {
   );
 }
 
-export default UserForm;
+export default Login;
