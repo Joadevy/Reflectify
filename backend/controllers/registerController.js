@@ -16,6 +16,14 @@ const HandleNewUser = async (req, res) => {
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    const existUser = await User.exists({ username });
+
+    if (existUser)
+      return res.status(400).json({
+        ok: false,
+        message: "Username already exists",
+      });
+
     const user = await User.create({
       username,
       password: hashedPassword,

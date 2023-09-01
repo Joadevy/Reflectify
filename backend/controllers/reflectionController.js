@@ -37,11 +37,10 @@ export const getAllReflections = async (req, res) => {
 
 export const handleLikeReflection = async (req, res) => {
   try {
-    // falta implementar el middleware para tener el id del usuario en la req
-    // { $addToSet: { likes: req.user.id } },
     const reflection = await Reflection.findOneAndUpdate(
       { id: req.params.reflectionId },
-      { $addToSet: { likes: "1" } },
+      // { $addToSet: { likes: "1" } },
+      { $addToSet: { likes: req.body.username } },
       { new: true },
     );
 
@@ -59,8 +58,8 @@ export const handleDislikeReflection = async (req, res) => {
   try {
     const reflection = await Reflection.findOneAndUpdate(
       { id: req.params.reflectionId },
-      // falta implementar el middleware para tener el id del usuario en la req
-      { $pull: { likes: "1" } },
+      // { $pull: { likes: "1" } },
+      { $pull: { likes: req.body.username } },
       { new: true },
     );
 
