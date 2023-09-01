@@ -3,8 +3,10 @@ import { Thought } from "../types";
 
 type Props = {
   thought: Thought;
-  handleLike: (thoughtId: string, add: boolean) => void;
+  handleLike: (thoughtId: string, add: boolean, username: string) => void;
 };
+
+const userFromContext = "test";
 
 const ThoughtItem = ({ thought, handleLike }: Props) => {
   // el defaultState tiene que venir de la base de datos, no del componente
@@ -13,7 +15,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
 
   const toggleLikeThought = (thoughtId: string) => {
     const like = !liked;
-    handleLike(thoughtId, like);
+    handleLike(thoughtId, like, userFromContext);
     setLiked(like);
   };
 

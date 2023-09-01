@@ -5,14 +5,19 @@ import api, { response } from "../api/thought";
 const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
 
-  const handleLike = async (id: string, add: boolean) => {
+  // username deberia venir de la sesion, estar en un contexto o algo asi
+  const handleLike = async (
+    reflectionId: string,
+    add: boolean,
+    username: string,
+  ) => {
     const response = add
-      ? await api.likeThought(id)
-      : await api.dislikeThought(id);
+      ? await api.likeThought(reflectionId, username)
+      : await api.dislikeThought(reflectionId, username);
 
     if (response.ok) {
       const updatedThoughts = thoughts.map((thought) => {
-        if (thought.id === id) {
+        if (thought.id === reflectionId) {
           return {
             ...thought,
             likes: response.data?.likes ?? [],

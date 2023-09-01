@@ -41,11 +41,21 @@ const api = {
       };
     }
   },
-  likeThought: async (id: string): Promise<response> => {
+  likeThought: async (
+    reflectionId: string,
+    username: string,
+  ): Promise<response> => {
     try {
-      const resp: response = await fetch(`${baseUrl}/api/${id}/like`, {
-        method: "PUT",
-      }).then((res) => res.json());
+      const resp: response = await fetch(
+        `${baseUrl}/api/${reflectionId}/like`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        },
+      ).then((res) => res.json());
       return resp;
     } catch (error) {
       console.error(error);
@@ -55,11 +65,21 @@ const api = {
       };
     }
   },
-  dislikeThought: async (id: string): Promise<response> => {
+  dislikeThought: async (
+    reflectionId: string,
+    username: string,
+  ): Promise<response> => {
     try {
-      const resp: response = await fetch(`${baseUrl}/api/${id}/dislike`, {
-        method: "PUT",
-      }).then((res) => res.json());
+      const resp: response = await fetch(
+        `${baseUrl}/api/${reflectionId}/dislike`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        },
+      ).then((res) => res.json());
       return resp;
     } catch (error) {
       console.error(error);
