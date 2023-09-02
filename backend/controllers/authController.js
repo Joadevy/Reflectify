@@ -31,7 +31,7 @@ const HandleLogin = async (req, res) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "24h",
+      expiresIn: "1h",
     });
 
     res.status(200).json({

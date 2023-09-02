@@ -7,7 +7,6 @@ const UserSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   registration_date: { type: Date, required: true },
-  refresh_token: { type: String, required: true },
 });
 
 const User = mongoose.model("User", UserSchema);

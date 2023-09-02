@@ -3,7 +3,6 @@ import "dotenv/config";
 const PORT = process.env.PORT || 4000;
 
 import cors from "cors";
-import mongoose from "mongoose";
 
 import newReflection from "./routes/api/newReflection.js";
 import getReflections from "./routes/api/getReflections.js";
@@ -11,24 +10,27 @@ import dislikeReflection from "./routes/api/dislikeReflection.js";
 import likeReflection from "./routes/api/likeReflection.js";
 import register from "./routes/api/register.js";
 import login from "./routes/api/auth.js";
+import credentials from "./middlewares/credentials.js";
+import connectDB from "./config/connectDB.js";
 
-// Conecto localmente a la db (en remoto solo esta autorizada la ip de mi pc)
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((error) => console.log(error.message));
+connectDB();
 
 const app = express();
 
+app.use(credentials);
 app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use("/api", newReflection);
-app.use("/api", getReflections);
-app.use("/register", register);
-app.use("/login", login);
-app.put(`/api/:reflectionId/like`, likeReflection);
-app.put(`/api/:reflectionId/dislike`, dislikeReflection);
+app.post("/", newReflection);
+app.get("/", getReflections);
+app.post("/register", register);
+app.post("/login", login);
+app.put(`/:reflectionId/like`, likeReflection);
+app.put(`/:reflectionId/dislike`, dislikeReflection);
 
-app.listen(5000, () => console.log("Server started"));
+app.use("*", (req, res) => {
+  res.status(404).json({ ok: false, message: "Route not found" });
+});
+
+app.listen(PORT, () => console.log("Server started"));

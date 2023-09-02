@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 import bcrypt from "bcrypt";
 
 import User from "../models/User.js";
@@ -25,6 +27,7 @@ const HandleNewUser = async (req, res) => {
       });
 
     const user = await User.create({
+      id: crypto.randomBytes(16).toString("hex"),
       username,
       password: hashedPassword,
       country,
