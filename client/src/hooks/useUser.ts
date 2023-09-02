@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import type { User } from "../types";
+import type { UserClientSide } from "../types";
 
 const getUserFromStorage = async () =>
-  await JSON.parse(localStorage.getItem("user") || "{}");
+  await JSON.parse(sessionStorage.getItem("user") || "{}");
 
 const isEmpty = <T extends object>(obj: T) => {
   return Object.keys(obj).length === 0;
 };
 
 const useUser = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserClientSide | null>(null);
 
   useEffect(() => {
     const getUser = async () => {

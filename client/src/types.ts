@@ -8,8 +8,11 @@ export type Thought = {
 };
 
 export type User = {
-  id: string;
   username: string;
   password: string;
   country: string;
+};
+
+export type UserClientSide = Pick<User, "username" | "country"> & {
+  accessToken: string;
 };

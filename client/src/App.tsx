@@ -1,9 +1,9 @@
-import UserForm from "./components/UserForm";
 import ThoughtItem from "./components/ThoughtItem";
 import InputFormItem from "./components/InputFormItem";
 import useUser from "./hooks/useUser";
 import api from "./api/thought";
 import useThought from "./hooks/useThought";
+import SignIn from "./routes/SignIn/SignIn";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -35,13 +35,13 @@ function App() {
   };
 
   if (!user) {
-    return <UserForm setUser={setUser} />;
+    return <SignIn setUser={setUser} />;
   }
 
   return (
-    <>
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mt-5">Reflectify</h1>
+    <main className="min-h-screen relative">
+      <div className="text-center pt-5">
+        <h1 className="text-4xl font-bold">Reflectify</h1>
         <p className="italic">
           {user?.username
             ? `Hi ${user.username}, share your reflection or thought with the world!`
@@ -59,13 +59,13 @@ function App() {
           placeholder="Share a reflexion..."
         />
 
-        <button type="submit" className=" bg-purple-600 rounded-md p-2 ">
+        <button type="submit" className="bg-purple-600 rounded-md p-2">
           Share
         </button>
       </form>
 
       {thoughts.length > 0 && (
-        <ul className="flex flex-col gap-4 p-4 mt-5  max-w-sm m-auto">
+        <ul className="flex flex-col gap-4 p-4 mt-1 max-w-sm m-auto pb-10">
           {thoughts.map((thought) => (
             <ThoughtItem
               key={thought.id}
@@ -75,7 +75,13 @@ function App() {
           ))}
         </ul>
       )}
-    </>
+
+      <footer className="absolute bottom-0 left-0 right-0 m-auto">
+        <p className="text-center text-gray-500 text-sm">
+          &copy; {new Date(Date.now()).getFullYear()} Reflectify
+        </p>
+      </footer>
+    </main>
   );
 }
 
