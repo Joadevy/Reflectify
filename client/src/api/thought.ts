@@ -6,12 +6,13 @@ export type response = {
   message?: string;
 };
 
-const baseUrl = "http://localhost:5173";
+// backend url
+const baseUrl = "http://localhost:5000";
 
 const api = {
   saveThought: async (thought: Thought): Promise<response> => {
     try {
-      const resp: response = await fetch(`${baseUrl}/api`, {
+      const resp: response = await fetch(`${baseUrl}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +30,7 @@ const api = {
   },
   getThoughts: async (): Promise<response> => {
     try {
-      const resp: response = await fetch(`${baseUrl}/api`).then((res) =>
+      const resp: response = await fetch(`${baseUrl}`).then((res) =>
         res.json(),
       );
       return resp;
@@ -46,16 +47,13 @@ const api = {
     username: string,
   ): Promise<response> => {
     try {
-      const resp: response = await fetch(
-        `${baseUrl}/api/${reflectionId}/like`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username }),
+      const resp: response = await fetch(`${baseUrl}/${reflectionId}/like`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ).then((res) => res.json());
+        body: JSON.stringify({ username }),
+      }).then((res) => res.json());
       return resp;
     } catch (error) {
       console.error(error);
@@ -70,16 +68,13 @@ const api = {
     username: string,
   ): Promise<response> => {
     try {
-      const resp: response = await fetch(
-        `${baseUrl}/api/${reflectionId}/dislike`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username }),
+      const resp: response = await fetch(`${baseUrl}/${reflectionId}/dislike`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ).then((res) => res.json());
+        body: JSON.stringify({ username }),
+      }).then((res) => res.json());
       return resp;
     } catch (error) {
       console.error(error);
