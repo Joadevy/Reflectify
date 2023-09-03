@@ -6,6 +6,15 @@ export type response = {
   data?: User;
 };
 
+export type loginResponse = {
+  ok: boolean;
+  message: string;
+  data?: {
+    token: string;
+    user: User;
+  };
+};
+
 // backend url
 const baseUrl = "http://localhost:5000";
 
@@ -30,9 +39,9 @@ const api = {
   },
   loginUser: async (
     user: Pick<User, "username" | "password">,
-  ): Promise<response> => {
+  ): Promise<loginResponse> => {
     try {
-      const resp: response = await fetch(`${baseUrl}/login`, {
+      const resp: loginResponse = await fetch(`${baseUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

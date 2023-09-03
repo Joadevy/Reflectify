@@ -3,7 +3,7 @@ import InputFormItem from "./components/InputFormItem";
 import useUser from "./hooks/useUser";
 import api from "./api/thought";
 import useThought from "./hooks/useThought";
-import SignIn from "./routes/SignIn/SignIn";
+import { useNavigate } from "react-router-dom";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -11,7 +11,8 @@ interface thoughtForm extends HTMLFormElement {
 
 function App() {
   const { thoughts, setThoughts, handleLike } = useThought();
-  const { user, setUser } = useUser();
+  const { user } = useUser();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
@@ -35,7 +36,7 @@ function App() {
   };
 
   if (!user) {
-    return <SignIn setUser={setUser} />;
+    navigate("/register");
   }
 
   return (
