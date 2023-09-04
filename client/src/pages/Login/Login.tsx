@@ -3,6 +3,8 @@ import useUser from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
 import InputFormItem from "../Signup/InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
+import ErrorToast from "./ErrorToast";
+import { useEffect, useState } from "react";
 
 interface LoginForm extends HTMLFormElement {
   username: HTMLInputElement;
@@ -14,6 +16,8 @@ const capitalize = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 function Login() {
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useUser();
 
@@ -21,7 +25,16 @@ function Login() {
     navigate("/");
   }
 
+  useEffect(() => {
+    if (invalidCredentials) {
+      setTimeout(() => {
+        setInvalidCredentials(false);
+      }, 4000);
+    }
+  }, [invalidCredentials]);
+
   const handleSubmit = async (event: React.FormEvent<LoginForm>) => {
+    setLoading(true);
     event.preventDefault();
     const username = capitalize(event.currentTarget.username.value.trim());
     const pwd = event.currentTarget.password.value.trim();
@@ -50,11 +63,12 @@ function Login() {
         sessionStorage.setItem("user", JSON.stringify(clientUser));
         navigate("/");
       } else {
-        console.log("Invalid username or password");
+        setInvalidCredentials(true);
       }
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
 
   return (
@@ -85,8 +99,12 @@ function Login() {
           type="password"
         />
 
-        <button type="submit" className=" bg-purple-600 rounded-md p-2 mt-2 ">
-          Log In
+        <button
+          type="submit"
+          className=" bg-purple-600 rounded-md p-2 mt-2 "
+          disabled={loading ?? null}
+        >
+          {loading ? "..." : "Log In"}
         </button>
       </Form>
 
@@ -104,6 +122,9 @@ function Login() {
           &copy; {new Date(Date.now()).getFullYear()} Reflectify
         </p>
       </footer>
+      {invalidCredentials && (
+        <ErrorToast message="Invalid username or password" />
+      )}
     </div>
   );
 }
