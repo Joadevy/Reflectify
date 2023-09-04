@@ -13,7 +13,7 @@ interface LoginForm extends HTMLFormElement {
 const capitalize = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-function SignIn() {
+function SignUp() {
   const navigate = useNavigate();
   const { user } = useUser();
 
@@ -114,4 +114,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;
