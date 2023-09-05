@@ -20,7 +20,7 @@ function Login() {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
 
   useEffect(() => {
     if (invalidCredentials) {
@@ -64,6 +64,7 @@ function Login() {
         clientUser.accessToken = accessToken;
         clientUser.country = country ?? "";
         sessionStorage.setItem("user", JSON.stringify(clientUser));
+        setUser(clientUser);
         navigate("/");
       } else {
         setInvalidCredentials(true);
