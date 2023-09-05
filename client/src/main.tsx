@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/Error/errorPage.tsx";
@@ -6,21 +5,35 @@ import App from "./App.tsx";
 import "./index.css";
 import Login from "./pages/Login/Login.tsx";
 import SignUp from "./pages/Signup/Signup.tsx";
+import UserContextProvider from "./hooks/useUser.tsx";
+import React from "react";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    ),
     errorElement: <ErrorPage />,
   },
   {
     path: "register",
-    element: <SignUp />,
+    element: (
+      <UserContextProvider>
+        <SignUp />
+      </UserContextProvider>
+    ),
     errorElement: <ErrorPage />,
   },
   {
     path: "login",
-    element: <Login />,
+    element: (
+      <UserContextProvider>
+        <Login />
+      </UserContextProvider>
+    ),
     errorElement: <ErrorPage />,
   },
 ]);

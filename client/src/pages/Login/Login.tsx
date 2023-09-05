@@ -1,10 +1,11 @@
 import api from "../../api/user";
-import useUser from "../../hooks/useUser";
+import { useUserContext } from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
 import InputFormItem from "../Signup/InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
 import ErrorToast from "./ErrorToast";
 import { useEffect, useState } from "react";
+import { isEmpty } from "../../helpers/utils";
 
 interface LoginForm extends HTMLFormElement {
   username: HTMLInputElement;
@@ -19,11 +20,7 @@ function Login() {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useUser();
-
-  if (user) {
-    navigate("/");
-  }
+  const { user } = useUserContext();
 
   useEffect(() => {
     if (invalidCredentials) {
@@ -32,6 +29,12 @@ function Login() {
       }, 4000);
     }
   }, [invalidCredentials]);
+
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      navigate("/");
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event: React.FormEvent<LoginForm>) => {
     setLoading(true);

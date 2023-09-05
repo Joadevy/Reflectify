@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import api from "../../api/user";
-import useUser from "../../hooks/useUser";
+import { isEmpty } from "../../helpers/utils";
+import { useUserContext } from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
 import InputFormItem from "./InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
@@ -15,11 +17,13 @@ const capitalize = (str: string) =>
 
 function SignUp() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, setUser } = useUserContext();
 
-  if (user) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      navigate("/");
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event: React.FormEvent<LoginForm>) => {
     event.preventDefault();
@@ -50,6 +54,7 @@ function SignUp() {
         clientUser.accessToken = accessToken;
       }
       sessionStorage.setItem("user", JSON.stringify(clientUser));
+      setUser(clientUser);
       navigate("/");
     } catch (error) {
       console.error(error);

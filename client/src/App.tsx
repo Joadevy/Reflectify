@@ -1,18 +1,23 @@
 import ThoughtItem from "./components/ThoughtItem";
 import InputFormItem from "./components/InputFormItem";
-import useUser from "./hooks/useUser";
+import { useUserContext } from "./hooks/useUser";
 import api from "./api/thought";
 import useThought from "./hooks/useThought";
 import { useNavigate } from "react-router-dom";
+import { isEmpty } from "./helpers/utils";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
 }
 
 function App() {
-  const { thoughts, setThoughts, handleLike } = useThought();
-  const { user } = useUser();
   const navigate = useNavigate();
+  const { user } = useUserContext();
+  const { thoughts, setThoughts, handleLike } = useThought();
+
+  if (isEmpty(user)) {
+    navigate("/register");
+  }
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
@@ -34,10 +39,6 @@ function App() {
 
     await api.saveThought(thought);
   };
-
-  if (!user) {
-    navigate("/register");
-  }
 
   return (
     <main className="min-h-screen relative">
