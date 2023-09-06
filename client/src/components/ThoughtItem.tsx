@@ -12,6 +12,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
   // el defaultState tiene que venir de la base de datos, no del componente
   // necesito mantener en la db los usuarios y quien le dio like a que thought
   const [liked, setLiked] = useState(thought.likes.includes(user.username));
+  const isYourThought = user.username === thought.username;
 
   const toggleLikeThought = (thoughtId: string) => {
     const like = !liked;
@@ -23,7 +24,13 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
     <li className="border border-purple-400 rounded-md p-2">
       <header>
         <p>
-          ✦ <span className="font-bold">{thought.username}</span> reflected:
+          ✦{" "}
+          <span
+            className={"font-bold " + (isYourThought ? "text-purple-400" : "")}
+          >
+            {isYourThought ? "You" : thought.username}
+          </span>{" "}
+          reflected:
         </p>
       </header>
       <p className=" bg-slate-700 shadow border border-transparent p-2 rounded-md mt-1">

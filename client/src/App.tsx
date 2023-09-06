@@ -5,6 +5,7 @@ import api from "./api/thought";
 import useThought from "./hooks/useThought";
 import { useNavigate } from "react-router-dom";
 import { isEmpty } from "./helpers/utils";
+import { useEffect } from "react";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -15,9 +16,11 @@ function App() {
   const { user } = useUserContext();
   const { thoughts, setThoughts, handleLike } = useThought();
 
-  if (isEmpty(user)) {
-    navigate("/register");
-  }
+  useEffect(() => {
+    if (isEmpty(user)) {
+      navigate("/register");
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
@@ -34,10 +37,11 @@ function App() {
       likes: [],
     };
 
+    const { ok } = await api.saveThought(thought);
+    if (!ok) return;
+
     setThoughts([thought, ...thoughts]);
     event.currentTarget.thought.value = "";
-
-    await api.saveThought(thought);
   };
 
   return (
@@ -45,9 +49,14 @@ function App() {
       <div className="text-center pt-5">
         <h1 className="text-4xl font-bold">Reflectify</h1>
         <p className="italic">
-          {user?.username
-            ? `Hi ${user.username}, share your reflection or thought with the world!`
-            : "Share your reflection or thought with the world!"}
+          {user?.username ? (
+            <span>
+              Hi <span className="text-purple-400">{user.username}</span>, share
+              your reflection or thought with the world!
+            </span>
+          ) : (
+            "Share your reflection or thought with the world!"
+          )}
         </p>
       </div>
       <form
@@ -61,7 +70,10 @@ function App() {
           placeholder="Share a reflexion..."
         />
 
-        <button type="submit" className="bg-purple-600 rounded-md p-2">
+        <button
+          type="submit"
+          className="bg-purple-600 rounded-md p-2 hover:opacity-80 transition-opacity"
+        >
           Share
         </button>
       </form>

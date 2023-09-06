@@ -95,7 +95,7 @@ function SignUp() {
         />
 
         <button type="submit" className=" bg-purple-600 rounded-md p-2 mt-2 ">
-          Sign In
+          Sign Up
         </button>
       </Form>
 
