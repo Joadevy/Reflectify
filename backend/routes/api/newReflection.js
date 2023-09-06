@@ -4,8 +4,6 @@ import { createNewReflection } from "../../controllers/reflectionController.js";
 import VerifyJWt from "../../middlewares/VerifyJWT.js";
 const router = express.Router();
 
-// falta agregar el middleware VerifyJWT cuando implemente el login en el frontend
-// router.post("/", VerifyJWt, createNewReflection);
-router.post("/", createNewReflection);
+router.post("/", VerifyJWt, createNewReflection);
 
 export default router;

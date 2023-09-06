@@ -5,6 +5,6 @@ import VerifyJWt from "../../middlewares/VerifyJWT.js";
 const router = express.Router();
 
 // falta agregar el middleware VerifyJWT cuando implemente el login en el frontend
-router.get("/", getAllReflections);
+router.get("/", VerifyJWt, getAllReflections);
 
 export default router;
