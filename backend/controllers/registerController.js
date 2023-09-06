@@ -1,6 +1,7 @@
 import crypto from "crypto";
 
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
 
@@ -34,10 +35,21 @@ const HandleNewUser = async (req, res) => {
       registration_date: new Date(),
     });
 
+    const payload = {
+      username: user.username,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     res.status(201).json({
       ok: true,
       message: "User created successfully",
-      data: user,
+      data: {
+        user,
+        token,
+      },
     });
   } catch (error) {
     res.status(500).json({ ok: false, message: "Error creating user" });
