@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { Thought } from "../types";
+import { useUserContext } from "../hooks/useUser";
 
 type Props = {
   thought: Thought;
-  handleLike: (thoughtId: string, add: boolean, username: string) => void;
+  handleLike: (thoughtId: string, add: boolean) => void;
 };
 
-const userFromContext = "test";
-
 const ThoughtItem = ({ thought, handleLike }: Props) => {
+  const { user } = useUserContext();
   // el defaultState tiene que venir de la base de datos, no del componente
   // necesito mantener en la db los usuarios y quien le dio like a que thought
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(thought.likes.includes(user.username));
 
   const toggleLikeThought = (thoughtId: string) => {
     const like = !liked;
-    handleLike(thoughtId, like, userFromContext);
+    handleLike(thoughtId, like);
     setLiked(like);
   };
 
