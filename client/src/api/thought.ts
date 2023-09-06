@@ -9,23 +9,6 @@ export type response = {
 // backend url
 const baseUrl = "http://localhost:5000";
 
-// headers: {
-//     Authorization: `Bearer ${accessToken}`,
-//   },
-// })
-//   .then((response) => {
-//     if (!response.ok) {
-//       throw new Error("No se pudo verificar la autenticación del usuario");
-//     }
-//     return response.json();
-//   })
-//   .then((data) => {
-//     // El usuario está validado en el sistema
-//   })
-//   .catch((error) => {
-//     // El usuario no está validado en el sistema
-//   });
-
 const api = {
   saveThought: async (thought: Thought): Promise<response> => {
     try {
@@ -51,9 +34,14 @@ const api = {
   },
   getThoughts: async (): Promise<response> => {
     try {
-      const resp: response = await fetch(`${baseUrl}`).then((res) =>
-        res.json(),
+      const userData: UserClientSide = JSON.parse(
+        sessionStorage.getItem("user")!,
       );
+      const resp: response = await fetch(`${baseUrl}`, {
+        headers: {
+          Authorization: `Bearer ${userData.accessToken}`,
+        },
+      }).then((res) => res.json());
       return resp;
     } catch (error) {
       console.error(error);
