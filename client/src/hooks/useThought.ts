@@ -6,14 +6,10 @@ const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
 
   // username deberia venir de la sesion, estar en un contexto o algo asi
-  const handleLike = async (
-    reflectionId: string,
-    add: boolean,
-    username: string,
-  ) => {
+  const handleLike = async (reflectionId: string, add: boolean) => {
     const response = add
-      ? await api.likeThought(reflectionId, username)
-      : await api.dislikeThought(reflectionId, username);
+      ? await api.likeThought(reflectionId)
+      : await api.dislikeThought(reflectionId);
 
     if (response.ok) {
       const updatedThoughts = thoughts.map((thought) => {
