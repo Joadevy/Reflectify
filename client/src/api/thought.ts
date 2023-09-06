@@ -1,4 +1,4 @@
-import type { Thought } from "../types";
+import type { Thought, UserClientSide } from "../types";
 
 export type response = {
   ok: boolean;
@@ -9,13 +9,34 @@ export type response = {
 // backend url
 const baseUrl = "http://localhost:5000";
 
+// headers: {
+//     Authorization: `Bearer ${accessToken}`,
+//   },
+// })
+//   .then((response) => {
+//     if (!response.ok) {
+//       throw new Error("No se pudo verificar la autenticación del usuario");
+//     }
+//     return response.json();
+//   })
+//   .then((data) => {
+//     // El usuario está validado en el sistema
+//   })
+//   .catch((error) => {
+//     // El usuario no está validado en el sistema
+//   });
+
 const api = {
   saveThought: async (thought: Thought): Promise<response> => {
     try {
+      const userData: UserClientSide = JSON.parse(
+        sessionStorage.getItem("user")!,
+      );
       const resp: response = await fetch(`${baseUrl}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.accessToken}`,
         },
         body: JSON.stringify(thought),
       }).then((res) => res.json());
@@ -42,17 +63,18 @@ const api = {
       };
     }
   },
-  likeThought: async (
-    reflectionId: string,
-    username: string,
-  ): Promise<response> => {
+  likeThought: async (reflectionId: string): Promise<response> => {
     try {
+      const userData: UserClientSide = JSON.parse(
+        sessionStorage.getItem("user")!,
+      );
       const resp: response = await fetch(`${baseUrl}/${reflectionId}/like`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.accessToken}`,
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username: userData.username }),
       }).then((res) => res.json());
       return resp;
     } catch (error) {
@@ -63,17 +85,18 @@ const api = {
       };
     }
   },
-  dislikeThought: async (
-    reflectionId: string,
-    username: string,
-  ): Promise<response> => {
+  dislikeThought: async (reflectionId: string): Promise<response> => {
     try {
+      const userData: UserClientSide = JSON.parse(
+        sessionStorage.getItem("user")!,
+      );
       const resp: response = await fetch(`${baseUrl}/${reflectionId}/dislike`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.accessToken}`,
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username: userData.username }),
       }).then((res) => res.json());
       return resp;
     } catch (error) {
