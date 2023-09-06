@@ -60,7 +60,6 @@ function Login() {
       const accessToken = responseLogin?.data?.token;
       const country = responseLogin?.data?.user?.country;
       if (accessToken) {
-        sessionStorage.setItem("accesToken", accessToken);
         clientUser.accessToken = accessToken;
         clientUser.country = country ?? "";
         sessionStorage.setItem("user", JSON.stringify(clientUser));
