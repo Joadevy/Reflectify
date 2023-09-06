@@ -6,7 +6,7 @@ export type response = {
   data?: User;
 };
 
-export type loginResponse = {
+export type authResponse = {
   ok: boolean;
   message: string;
   data?: {
@@ -19,9 +19,9 @@ export type loginResponse = {
 const baseUrl = "http://localhost:5000";
 
 const api = {
-  registerUser: async (user: User): Promise<response> => {
+  registerUser: async (user: User): Promise<authResponse> => {
     try {
-      const resp: response = await fetch(`${baseUrl}/register`, {
+      const resp: authResponse = await fetch(`${baseUrl}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,9 +39,9 @@ const api = {
   },
   loginUser: async (
     user: Pick<User, "username" | "password">,
-  ): Promise<loginResponse> => {
+  ): Promise<authResponse> => {
     try {
-      const resp: loginResponse = await fetch(`${baseUrl}/login`, {
+      const resp: authResponse = await fetch(`${baseUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
