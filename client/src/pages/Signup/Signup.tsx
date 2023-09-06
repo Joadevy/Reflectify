@@ -46,11 +46,9 @@ function SignUp() {
     };
 
     try {
-      await api.registerUser(userToDB);
-      const responseLogin = await api.loginUser(userToDB);
-      const accessToken = responseLogin?.data?.token;
+      const response = await api.registerUser(userToDB);
+      const accessToken = response?.data?.token;
       if (accessToken) {
-        sessionStorage.setItem("accesToken", accessToken);
         clientUser.accessToken = accessToken;
       }
       sessionStorage.setItem("user", JSON.stringify(clientUser));
