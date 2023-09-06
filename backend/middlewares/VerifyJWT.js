@@ -4,7 +4,7 @@ import "dotenv/config";
 
 const VerifyJWt = (req = request, res = response, next) => {
   try {
-    const token = req.header("Authorization");
+    const token = req.header("Authorization").replace("Bearer ", "");
 
     if (!token)
       return res.status(401).json({
@@ -14,7 +14,7 @@ const VerifyJWt = (req = request, res = response, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) return res.sendStatus(403); //invalid token
-      req.username = decoded.username;
+      req.body.username = decoded.username;
       next();
     });
   } catch (error) {
