@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../../api/user";
 import { isEmpty } from "../../helpers/utils";
 import { useUserContext } from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
 import InputFormItem from "./InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
+import ErrorToast from "../../components/ErrorToast";
+import InputFormCountry from "./InputFormCountry";
 
-interface LoginForm extends HTMLFormElement {
+interface SignUpForm extends HTMLFormElement {
   username: HTMLInputElement;
   country: HTMLInputElement;
   password: HTMLInputElement;
@@ -18,6 +20,10 @@ const capitalize = (str: string) =>
 function SignUp() {
   const navigate = useNavigate();
   const { user, setUser } = useUserContext();
+  const [error, setError] = useState(false);
+  const [invalidData, setInvalidData] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     if (!isEmpty(user)) {
@@ -25,13 +31,34 @@ function SignUp() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSubmit = async (event: React.FormEvent<LoginForm>) => {
+  useEffect(() => {
+    if (invalidData) {
+      setTimeout(() => {
+        setInvalidData(false);
+      }, 3000);
+    }
+
+    if (error) {
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+    }
+  }, [invalidData, error]);
+
+  const handleSubmit = async (event: React.FormEvent<SignUpForm>) => {
+    if (loading) return;
+
+    setLoading(true);
     event.preventDefault();
     const username = capitalize(event.currentTarget.username.value.trim());
     const country = capitalize(event.currentTarget.country.value.trim());
     const pwd = event.currentTarget.password.value.trim();
 
-    if (!username || !country || !pwd) return;
+    if (!username || !country || !pwd) {
+      setInvalidData(true);
+      setLoading(false);
+      return;
+    }
 
     const userToDB: User = {
       username,
@@ -50,13 +77,17 @@ function SignUp() {
       const accessToken = response?.data?.token;
       if (accessToken) {
         clientUser.accessToken = accessToken;
+        sessionStorage.setItem("user", JSON.stringify(clientUser));
+        setUser(clientUser);
+        navigate("/");
+      } else {
+        setInvalidData(true);
       }
-      sessionStorage.setItem("user", JSON.stringify(clientUser));
-      setUser(clientUser);
-      navigate("/");
     } catch (error) {
+      setError(true);
       console.error(error);
     }
+    setLoading(false);
   };
 
   return (
@@ -87,15 +118,20 @@ function SignUp() {
           type="password"
         />
 
-        <InputFormItem
+        <InputFormCountry
           htmlFor="inputCountry"
           name="country"
           placeholder="Type your country ..."
+          setDisabled={setDisabled}
           label="Country"
         />
 
-        <button type="submit" className=" bg-purple-600 rounded-md p-2 mt-2 ">
-          Sign Up
+        <button
+          type="submit"
+          className=" bg-purple-600 rounded-md p-2 mt-2 + disabled:bg-gray-700"
+          disabled={disabled}
+        >
+          {loading ? "Loading..." : "Sign Up"}
         </button>
       </Form>
 
@@ -113,6 +149,11 @@ function SignUp() {
           &copy; {new Date(Date.now()).getFullYear()} Reflectify
         </p>
       </footer>
+
+      {error && <ErrorToast message="Something went wrong! Please Try Again" />}
+      {invalidData && (
+        <ErrorToast message="Invalid username, password or country. Please Try Again" />
+      )}
     </div>
   );
 }
