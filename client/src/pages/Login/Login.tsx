@@ -3,9 +3,9 @@ import { useUserContext } from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
 import InputFormItem from "../Signup/InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
-import ErrorToast from "./ErrorToast";
 import { useEffect, useState } from "react";
 import { isEmpty } from "../../helpers/utils";
+import ErrorToast from "../../components/ErrorToast";
 
 interface LoginForm extends HTMLFormElement {
   username: HTMLInputElement;
