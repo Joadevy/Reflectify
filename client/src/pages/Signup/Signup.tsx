@@ -3,10 +3,10 @@ import api from "../../api/user";
 import { isEmpty } from "../../helpers/utils";
 import { useUserContext } from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
-import InputFormItem from "./InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
 import ErrorToast from "../../components/ErrorToast";
 import InputFormCountry from "./InputFormCountry";
+import InputFormItem from "../../components/InputFormItem";
 
 interface SignUpForm extends HTMLFormElement {
   username: HTMLInputElement;
@@ -51,7 +51,7 @@ function SignUp() {
     setLoading(true);
     event.preventDefault();
     const username = capitalize(event.currentTarget.username.value.trim());
-    const country = capitalize(event.currentTarget.country.value.trim());
+    const country = event.currentTarget.country.value.trim();
     const pwd = event.currentTarget.password.value.trim();
 
     if (!username || !country || !pwd) {

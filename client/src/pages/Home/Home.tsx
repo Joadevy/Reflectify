@@ -72,7 +72,7 @@ function Home() {
       </form>
 
       {thoughts.length > 0 && (
-        <ul className="flex flex-col gap-4 p-4 mt-1 max-w-sm m-auto pb-10">
+        <ul className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
           {thoughts.map((thought) => (
             <ThoughtItem
               key={thought.id}

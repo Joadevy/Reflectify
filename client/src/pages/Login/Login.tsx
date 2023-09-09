@@ -1,11 +1,11 @@
 import api from "../../api/user";
 import { useUserContext } from "../../hooks/useUser";
 import { User, UserClientSide } from "../../types";
-import InputFormItem from "../Signup/InputFormItem";
 import { Link, Form, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { isEmpty } from "../../helpers/utils";
 import ErrorToast from "../../components/ErrorToast";
+import InputFormItem from "../../components/InputFormItem";
 
 interface LoginForm extends HTMLFormElement {
   username: HTMLInputElement;
@@ -42,7 +42,11 @@ function Login() {
     const username = capitalize(event.currentTarget.username.value.trim());
     const pwd = event.currentTarget.password.value.trim();
 
-    if (!username || !pwd) return;
+    if (!username || !pwd) {
+      setInvalidCredentials(true);
+      setLoading(false);
+      return;
+    }
 
     const userToDB: Pick<User, "username" | "password"> = {
       username,
