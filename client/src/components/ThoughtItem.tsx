@@ -21,7 +21,7 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
   };
 
   return (
-    <li className="border border-purple-400 rounded-md p-2">
+    <li className="border border-purple-400 rounded-md p-2 shadow-[0_0_10px_#8e24aa]">
       <header>
         <p>
           ✦{" "}
