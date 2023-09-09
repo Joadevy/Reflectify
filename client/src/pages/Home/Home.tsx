@@ -17,6 +17,7 @@ function Home() {
     const inputThought = event.currentTarget.thought.value.trim();
 
     if (!inputThought) return;
+    event.currentTarget.thought.value = "";
 
     const thought = {
       id: crypto.randomUUID(),
@@ -31,7 +32,6 @@ function Home() {
     if (!ok) return;
 
     setThoughts([thought, ...thoughts]);
-    event.currentTarget.thought.value = "";
   };
 
   return (
