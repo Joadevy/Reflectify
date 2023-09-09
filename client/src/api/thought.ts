@@ -57,7 +57,7 @@ const api = {
         sessionStorage.getItem("user")!,
       );
       const resp: response = await fetch(`${baseUrl}/${reflectionId}/like`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userData.accessToken}`,
@@ -79,7 +79,7 @@ const api = {
         sessionStorage.getItem("user")!,
       );
       const resp: response = await fetch(`${baseUrl}/${reflectionId}/dislike`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userData.accessToken}`,

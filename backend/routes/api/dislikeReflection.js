@@ -4,6 +4,6 @@ import { handleDislikeReflection } from "../../controllers/reflectionController.
 import VerifyJWt from "../../middlewares/VerifyJWT.js";
 const router = express.Router();
 
-router.put("/:reflectionId/dislike", VerifyJWt, handleDislikeReflection);
+router.patch("/:reflectionId/dislike", VerifyJWt, handleDislikeReflection);
 
 export default router;
