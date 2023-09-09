@@ -1,4 +1,6 @@
 import express from "express";
+const app = express();
+
 import "dotenv/config";
 const PORT = process.env.PORT || 4000;
 
@@ -12,15 +14,14 @@ import register from "./routes/api/register.js";
 import login from "./routes/api/auth.js";
 import credentials from "./middlewares/credentials.js";
 import connectDB from "./config/connectDB.js";
+import corsOptions from "./config/corsOptions.js";
 
 connectDB();
 
-const app = express();
-
 app.use(credentials);
-app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
+app.use(express.json());
 // Routes
 app.post("/", newReflection);
 app.get("/", getReflections);
