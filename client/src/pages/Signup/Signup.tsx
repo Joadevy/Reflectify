@@ -93,9 +93,11 @@ function SignUp() {
   return (
     <div className="min-h-screen">
       <div className="text-center pt-5">
-        <h1 className="text-4xl font-bold">Reflectify</h1>
+        <h1 className="font-extrabold text-transparent text-4xl bg-clip-text bg-gradient-to-r from-purple-800 via-purple-600 to-pink-400">
+          Together, we're Reflectify
+        </h1>
         <p className="italic">
-          Share your reflection or thought with the world!
+          Register and share your reflection or thought with the world!
         </p>
       </div>
       <Form
@@ -139,7 +141,7 @@ function SignUp() {
         <p className="text-center text-gray-400 text-sm">
           Already have an account?{" "}
           <Link to="/login" className="text-purple-600">
-            Login
+            Log In
           </Link>
         </p>
       </div>

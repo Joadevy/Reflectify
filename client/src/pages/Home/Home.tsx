@@ -2,7 +2,7 @@ import api from "../../api/thought";
 import ThoughtItem from "../../components/ThoughtItem";
 import useThought from "../../hooks/useThought";
 import { useUserContext } from "../../hooks/useUser";
-import InputFormItem from "../Signup/InputFormItem";
+import InputFormItem from "../../components/InputFormItem";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -37,12 +37,15 @@ function Home() {
   return (
     <main className="min-h-screen relative">
       <div className="text-center pt-5">
-        <h1 className="text-4xl font-bold">Reflectify</h1>
+        <h1 className="font-extrabold text-transparent text-4xl bg-clip-text bg-gradient-to-r from-purple-800 via-purple-600 to-pink-400">
+          Together, we're Reflectify
+        </h1>
+
         <p className="italic">
           {user?.username ? (
             <span>
-              Hi <span className="text-purple-400">{user.username}</span>, share
-              your reflection or thought with the world!
+              Hi {user.username}, share your reflection or thought with the
+              world!
             </span>
           ) : (
             "Share your reflection or thought with the world!"
@@ -62,7 +65,7 @@ function Home() {
 
         <button
           type="submit"
-          className="bg-purple-600 rounded-md p-2 hover:opacity-80 transition-opacity"
+          className="bg-purple-800 border border-purple-400 rounded-md p-2 hover:opacity-80 transition-opacity"
         >
           Share
         </button>

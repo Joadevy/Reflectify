@@ -6,4 +6,40 @@
   background-color: #1f2937;
   color: antiquewhite;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-face-color: #161d2f;
+  scrollbar-base-color: #161d2f;
+  scrollbar-3dlight-color: #161d2f;
+  scrollbar-highlight-color: #161d2f;
+  scrollbar-track-color: #10141e;
+  scrollbar-arrow-color: #10141e;
+  scrollbar-shadow-color: #161d2f;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 3px;
+}
+::-webkit-scrollbar-button {
+  background-color: #161d2f;
+}
+::-webkit-scrollbar-track {
+  background-color: #161d2f;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #10141e;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #161d2f;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #161d2f;
+}
+::-webkit-resizer {
+  background-color: #161d2f;
 }
