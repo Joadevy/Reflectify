@@ -26,8 +26,8 @@ app.post("/", newReflection);
 app.get("/", getReflections);
 app.post("/register", register);
 app.post("/login", login);
-app.put(`/:reflectionId/like`, likeReflection);
-app.put(`/:reflectionId/dislike`, dislikeReflection);
+app.patch(`/:reflectionId/like`, likeReflection);
+app.patch(`/:reflectionId/dislike`, dislikeReflection);
 
 app.use("*", (req, res) => {
   res.status(404).json({ ok: false, message: "Route not found" });

@@ -1,14 +1,19 @@
 import Reflection from "../models/Reflection.js";
+import { validateReflection } from "../models/ZodSchemas/Reflection.js";
+import { partialValidateUser } from "../models/ZodSchemas/User.js";
 
 export const createNewReflection = async (req, res) => {
   try {
+    const validatedReflection = validateReflection(req.body);
+
+    if (!validatedReflection.success)
+      return res.status(400).json({
+        ok: false,
+        message: validatedReflection.error.message,
+      });
+
     const reflection = await Reflection.create({
-      country: req.body.country,
-      username: req.body.username,
-      id: req.body.id,
-      date: req.body.date,
-      description: req.body.description,
-      likes: req.body.likes,
+      ...validatedReflection.data,
     });
 
     res.status(201).json({
@@ -37,16 +42,23 @@ export const getAllReflections = async (req, res) => {
 
 export const handleLikeReflection = async (req, res) => {
   try {
+    const validatedUser = partialValidateUser(req.body);
+
+    if (!validatedUser.success)
+      return res.status(400).json({
+        ok: false,
+        message: validatedUser.error.message,
+      });
+
     const reflection = await Reflection.findOneAndUpdate(
       { id: req.params.reflectionId },
-      // { $addToSet: { likes: "1" } },
-      { $addToSet: { likes: req.body.username } },
+      { $addToSet: { likes: validatedUser.data.username } },
       { new: true },
     );
 
     res.status(200).json({
       ok: true,
-      message: "Retflection liked successfully",
+      message: "Reflection liked successfully",
       data: reflection,
     });
   } catch (error) {
@@ -56,10 +68,18 @@ export const handleLikeReflection = async (req, res) => {
 
 export const handleDislikeReflection = async (req, res) => {
   try {
+    const validatedUser = partialValidateUser(req.body);
+
+    if (!validatedUser.success)
+      return res.status(400).json({
+        ok: false,
+        message: validatedUser.error.message,
+      });
+
     const reflection = await Reflection.findOneAndUpdate(
       { id: req.params.reflectionId },
       // { $pull: { likes: "1" } },
-      { $pull: { likes: req.body.username } },
+      { $pull: { likes: validatedUser.data.username } },
       { new: true },
     );
 

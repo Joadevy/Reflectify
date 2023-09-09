@@ -4,16 +4,19 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
+import { validateUser } from "../models/ZodSchemas/User.js";
 
 const HandleNewUser = async (req, res) => {
   try {
-    const { username, password, country } = req.body;
+    const userValidated = validateUser(req.body);
 
-    if (!username || !password || !country)
+    if (!userValidated.success)
       return res.status(400).json({
         ok: false,
-        message: "Missing required fields",
+        message: userValidated.error.message,
       });
+
+    const { username, password, country } = userValidated.data;
 
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
