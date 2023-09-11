@@ -16,8 +16,7 @@ export type authResponse = {
 };
 
 // backend url
-// const baseUrl = "http://localhost:5000";
-const baseUrl = "https://backend-zo2z.onrender.com";
+const baseUrl = "http://localhost:5000";
 
 const api = {
   registerUser: async (user: User): Promise<authResponse> => {

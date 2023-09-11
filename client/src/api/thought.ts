@@ -7,8 +7,7 @@ export type response = {
 };
 
 // backend url
-// const baseUrl = "http://localhost:5000";
-const baseUrl = "https://backend-zo2z.onrender.com";
+const baseUrl = "http://localhost:5000";
 
 const api = {
   saveThought: async (thought: Thought): Promise<response> => {
