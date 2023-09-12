@@ -13,3 +13,40 @@ const ReflectionSchema = new Schema({
 const Reflection = mongoose.model("Reflection", ReflectionSchema);
 
 export default Reflection;
+
+export class ReflectionModel {
+  static create = async ({ data }) => {
+    const reflection = await Reflection.create({
+      ...data,
+    });
+
+    return reflection;
+  };
+
+  static getAll = async () => {
+    // Find 20 reflections by date, descending order (newest first)
+    const reflections = await Reflection.find().sort({ date: -1 }).limit(20);
+
+    return reflections;
+  };
+
+  static like = async ({ reflectionId, username }) => {
+    const reflection = await Reflection.findOneAndUpdate(
+      { id: reflectionId },
+      { $addToSet: { likes: username } },
+      { new: true },
+    );
+
+    return reflection;
+  };
+
+  static dislike = async ({ reflectionId, username }) => {
+    const reflection = await Reflection.findOneAndUpdate(
+      { id: reflectionId },
+      { $pull: { likes: username } },
+      { new: true },
+    );
+
+    return reflection;
+  };
+}
