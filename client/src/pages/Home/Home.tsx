@@ -55,13 +55,15 @@ function Home() {
       <form
         action=""
         onSubmit={handleSubmit}
-        className="flex flex-row gap-2 p-4 max-w-sm m-auto"
+        className="flex flex-row gap-2 p-4 sm:max-w-sm lg:max-w-md m-auto"
       >
-        <InputFormItem
-          htmlFor="thoughtInput"
-          name="thought"
-          placeholder="Share a reflexion..."
-        />
+        <div className="w-full">
+          <InputFormItem
+            htmlFor="thoughtInput"
+            name="thought"
+            placeholder="Share a reflexion..."
+          />
+        </div>
 
         <button
           type="submit"
