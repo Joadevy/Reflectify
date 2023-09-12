@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { isEmpty } from "../../helpers/utils";
 import ErrorToast from "../../components/ErrorToast";
 import InputFormItem from "../../components/InputFormItem";
+import Header from "../../components/Header";
 
 interface LoginForm extends HTMLFormElement {
   username: HTMLInputElement;
@@ -37,8 +38,8 @@ function Login() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event: React.FormEvent<LoginForm>) => {
-    setLoading(true);
     event.preventDefault();
+    setLoading(true);
     const username = capitalize(event.currentTarget.username.value.trim());
     const pwd = event.currentTarget.password.value.trim();
 
@@ -80,14 +81,9 @@ function Login() {
 
   return (
     <div className="min-h-screen">
-      <div className="text-center pt-5">
-        <h1 className="font-extrabold text-transparent text-4xl bg-clip-text bg-gradient-to-r from-purple-800 via-purple-600 to-pink-400">
-          Together, we're Reflectify
-        </h1>
-        <p className="italic">
-          Log in to share your reflection or thought with the world!
-        </p>
-      </div>
+      <Header>
+        Log in to share your reflection or thought with the world!
+      </Header>
       <Form
         action=""
         onSubmit={handleSubmit}
@@ -111,7 +107,7 @@ function Login() {
         <button
           type="submit"
           className=" bg-purple-600 rounded-md p-2 mt-2 "
-          disabled={loading ?? null}
+          disabled={loading}
         >
           {loading ? "..." : "Log In"}
         </button>

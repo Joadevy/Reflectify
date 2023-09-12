@@ -15,7 +15,7 @@ const InputFormItem = ({ htmlFor, name, placeholder, type, label }: Props) => {
         id={htmlFor}
         type={type}
         placeholder={placeholder}
-        className="border border-purple-400 rounded-md p-2"
+        className="border border-purple-400 rounded-md p-2 outline-none"
       />
     </label>
   );

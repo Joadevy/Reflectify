@@ -7,6 +7,7 @@ import { Link, Form, useNavigate } from "react-router-dom";
 import ErrorToast from "../../components/ErrorToast";
 import InputFormCountry from "./InputFormCountry";
 import InputFormItem from "../../components/InputFormItem";
+import Header from "../../components/Header";
 
 interface SignUpForm extends HTMLFormElement {
   username: HTMLInputElement;
@@ -92,14 +93,9 @@ function SignUp() {
 
   return (
     <div className="min-h-screen">
-      <div className="text-center pt-5">
-        <h1 className="font-extrabold text-transparent text-4xl bg-clip-text bg-gradient-to-r from-purple-800 via-purple-600 to-pink-400">
-          Together, we're Reflectify
-        </h1>
-        <p className="italic">
-          Register and share your reflection or thought with the world!
-        </p>
-      </div>
+      <Header>
+        Register and share your reflection or thought with the world!
+      </Header>
       <Form
         action=""
         onSubmit={handleSubmit}

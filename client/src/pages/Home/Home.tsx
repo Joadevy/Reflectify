@@ -3,6 +3,7 @@ import ThoughtItem from "../../components/ThoughtItem";
 import useThought from "../../hooks/useThought";
 import { useUserContext } from "../../hooks/useUser";
 import InputFormItem from "../../components/InputFormItem";
+import Header from "../../components/Header";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -36,32 +37,27 @@ function Home() {
 
   return (
     <main className="min-h-screen relative">
-      <div className="text-center pt-5">
-        <h1 className="font-extrabold text-transparent text-4xl bg-clip-text bg-gradient-to-r from-purple-800 via-purple-600 to-pink-400">
-          Together, we're Reflectify
-        </h1>
-
-        <p className="italic">
-          {user?.username ? (
-            <span>
-              Hi {user.username}, share your reflection or thought with the
-              world!
-            </span>
-          ) : (
-            "Share your reflection or thought with the world!"
-          )}
-        </p>
-      </div>
+      <Header>
+        {user?.username ? (
+          <span>
+            Hi {user.username}, share your reflection or thought with the world!
+          </span>
+        ) : (
+          "Share your reflection or thought with the world!"
+        )}
+      </Header>
       <form
         action=""
         onSubmit={handleSubmit}
-        className="flex flex-row gap-2 p-4 max-w-sm m-auto"
+        className="flex flex-row gap-2 p-4 max-w-sm lg:max-w-md m-auto"
       >
-        <InputFormItem
-          htmlFor="thoughtInput"
-          name="thought"
-          placeholder="Share a reflexion..."
-        />
+        <div className="w-full">
+          <InputFormItem
+            htmlFor="thoughtInput"
+            name="thought"
+            placeholder="Share a reflexion..."
+          />
+        </div>
 
         <button
           type="submit"
