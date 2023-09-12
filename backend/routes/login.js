@@ -1,7 +1,7 @@
 import express from "express";
 
-import HandleLogin from "../controllers/authController.js";
+import { userController } from "../controllers/userController.js";
 
 export const loginRouter = express.Router();
 
-loginRouter.post("/", HandleLogin);
+loginRouter.post("/", userController.login);
