@@ -31,6 +31,7 @@ export const countrylist = [
   "Bulgaria",
   "Burkina Faso",
   "Burundi",
+  "Canada",
   "Cambodia",
   "Cameroon",
   "Cape Verde",
