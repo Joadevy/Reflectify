@@ -27,9 +27,9 @@ export class ReflectionController {
     }
   };
 
-  static getAll = async (req, res) => {
+  static getLast20 = async (req, res) => {
     try {
-      const reflections = await ReflectionModel.getAll();
+      const reflections = await ReflectionModel.getLast20();
 
       res.status(200).json({
         ok: true,

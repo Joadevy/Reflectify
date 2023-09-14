@@ -23,7 +23,7 @@ export class ReflectionModel {
     return reflection;
   };
 
-  static getAll = async () => {
+  static getLast20 = async () => {
     // Find 20 reflections by date, descending order (newest first)
     const reflections = await Reflection.find().sort({ date: -1 }).limit(20);
 

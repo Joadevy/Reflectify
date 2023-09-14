@@ -4,7 +4,7 @@ import { ReflectionController } from "../controllers/reflectionController.js";
 import VerifyJWt from "../middlewares/VerifyJWT.js";
 export const indexRouter = express.Router();
 
-indexRouter.get("/", VerifyJWt, ReflectionController.getAll);
+indexRouter.get("/", VerifyJWt, ReflectionController.getLast20);
 indexRouter.get(
   "/:page/:limit",
   VerifyJWt,
