@@ -40,6 +40,22 @@ export class ReflectionController {
     }
   };
 
+  static getPageWithLimit = async (req, res) => {
+    try {
+      const reflections = await ReflectionModel.getPageWithLimit({
+        page: req.params.page,
+        limit: req.params.limit,
+      });
+
+      res.status(200).json({
+        ok: true,
+        data: reflections,
+      });
+    } catch {
+      res.status(500).json({ ok: false, message: "Error getting reflections" });
+    }
+  };
+
   static like = async (req, res) => {
     try {
       const validatedUser = partialValidateUser(req.body);

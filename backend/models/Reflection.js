@@ -30,6 +30,15 @@ export class ReflectionModel {
     return reflections;
   };
 
+  static getPageWithLimit = async ({ page, limit }) => {
+    const reflections = await Reflection.find()
+      .sort({ date: -1 })
+      .skip(page * limit)
+      .limit(limit);
+
+    return reflections;
+  };
+
   static like = async ({ reflectionId, username }) => {
     const reflection = await Reflection.findOneAndUpdate(
       { id: reflectionId },
