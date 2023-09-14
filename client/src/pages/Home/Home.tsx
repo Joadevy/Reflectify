@@ -1,9 +1,9 @@
-import api from "../../api/thought";
 import ThoughtItem from "../../components/ThoughtItem";
 import useThought from "../../hooks/useThought";
 import { useUserContext } from "../../hooks/useUser";
 import InputFormItem from "../../components/InputFormItem";
 import Header from "../../components/Header";
+import api from "../../api/thought";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -11,7 +11,14 @@ interface thoughtForm extends HTMLFormElement {
 
 function Home() {
   const { user } = useUserContext();
-  const { thoughts, setThoughts, handleLike, loading } = useThought();
+  const {
+    thoughts,
+    // setThoughts,
+    handleLike,
+    loading,
+    addPage,
+    refreshThoughts,
+  } = useThought();
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
@@ -32,7 +39,11 @@ function Home() {
     const { ok } = await api.saveThought(thought);
     if (!ok) return;
 
-    setThoughts([thought, ...thoughts]);
+    // Hay que hacer un fetch a la base de datos para obtener los posts ahora porque
+    // rompe la logica de la paginacion.
+
+    // setThoughts([thought, ...thoughts]);
+    refreshThoughts();
   };
 
   return (
@@ -76,7 +87,7 @@ function Home() {
       )}
 
       {thoughts.length > 0 && (
-        <ul className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+        <ul className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-5">
           {thoughts.map((thought) => (
             <ThoughtItem
               key={thought.id}
@@ -85,6 +96,18 @@ function Home() {
             />
           ))}
         </ul>
+      )}
+
+      {thoughts.length > 0 && (
+        <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+          <button
+            className="bg-purple-800 border border-purple-400 rounded-md p-2 hover:opacity-80 transition-opacity"
+            onClick={addPage}
+            disabled={loading}
+          >
+            Load more
+          </button>
+        </div>
       )}
 
       {!loading && thoughts.length === 0 && (

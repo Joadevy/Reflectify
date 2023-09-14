@@ -5,6 +5,7 @@ import api, { response } from "../api/thought";
 const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
 
   // username deberia venir de la sesion, estar en un contexto o algo asi
   const handleLike = async (reflectionId: string, add: boolean) => {
@@ -26,19 +27,44 @@ const useThought = () => {
     }
   };
 
-  useEffect(() => {
+  const addPage = async () => {
+    setPage(page + 1);
+  };
+
+  const refreshThoughts = async () => {
     setLoading(true);
-    const fetchThoughts = async () => {
-      const response: response = await api.getThoughts().finally(() => {
+    const response: response = await api
+      .getThoughtByPageAndLimit(page)
+      .finally(() => {
         setLoading(false);
       });
-      setThoughts((response?.data ?? []) as Thought[]);
-    };
+    const newThoughts = response?.data ?? [];
+    setThoughts(newThoughts as Thought[]);
+  };
 
-    fetchThoughts();
-  }, []);
+  const handlePage = async (page: number) => {
+    setLoading(true);
+    const response: response = await api
+      .getThoughtByPageAndLimit(page)
+      .finally(() => {
+        setLoading(false);
+      });
+    const newThoughts = thoughts.concat(response?.data ?? []);
+    setThoughts(newThoughts as Thought[]);
+  };
 
-  return { thoughts, setThoughts, handleLike, loading };
+  useEffect(() => {
+    handlePage(page);
+  }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return {
+    thoughts,
+    setThoughts,
+    handleLike,
+    loading,
+    addPage,
+    refreshThoughts,
+  };
 };
 
 export default useThought;

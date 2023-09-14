@@ -54,6 +54,31 @@ const api = {
       };
     }
   },
+  getThoughtByPageAndLimit: async (
+    page: number,
+    limit: number = 7,
+  ): Promise<response> => {
+    try {
+      const userData: UserClientSide = JSON.parse(
+        sessionStorage.getItem("user")!,
+      );
+      const resp: response = await fetch(`${baseUrl}/${page}/${limit}`, {
+        headers: {
+          Authorization: `Bearer ${userData.accessToken}`,
+        },
+      }).then(async (res) => {
+        if (!res.ok) throw new Error(await res.text());
+        return await res.json();
+      });
+      return resp;
+    } catch (error) {
+      console.error(error);
+      return {
+        ok: false,
+        message: "Error getting thoughts: " + error,
+      };
+    }
+  },
   likeThought: async (reflectionId: string): Promise<response> => {
     try {
       const userData: UserClientSide = JSON.parse(
