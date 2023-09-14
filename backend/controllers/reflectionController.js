@@ -44,7 +44,7 @@ export class ReflectionController {
     try {
       const reflections = await ReflectionModel.getPageWithLimit({
         page: req.params.page,
-        limit: req.params.limit,
+        limit: req.params.limit ?? 7,
       });
 
       res.status(200).json({
