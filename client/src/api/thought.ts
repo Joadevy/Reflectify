@@ -41,7 +41,10 @@ const api = {
         headers: {
           Authorization: `Bearer ${userData.accessToken}`,
         },
-      }).then((res) => res.json());
+      }).then(async (res) => {
+        if (!res.ok) throw new Error(await res.text());
+        return await res.json();
+      });
       return resp;
     } catch (error) {
       console.error(error);

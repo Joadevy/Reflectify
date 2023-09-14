@@ -11,7 +11,7 @@ interface thoughtForm extends HTMLFormElement {
 
 function Home() {
   const { user } = useUserContext();
-  const { thoughts, setThoughts, handleLike } = useThought();
+  const { thoughts, setThoughts, handleLike, loading } = useThought();
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
@@ -67,6 +67,14 @@ function Home() {
         </button>
       </form>
 
+      {loading && (
+        <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+          <p className="text-center text-gray-500 text-sm italic">
+            Loading reflections...
+          </p>
+        </div>
+      )}
+
       {thoughts.length > 0 && (
         <ul className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
           {thoughts.map((thought) => (
@@ -77,6 +85,14 @@ function Home() {
             />
           ))}
         </ul>
+      )}
+
+      {!loading && thoughts.length === 0 && (
+        <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+          <p className="text-center text-gray-500 text-sm italic">
+            No reflections yet, be the first to share one!
+          </p>
+        </div>
       )}
 
       <footer className="absolute bottom-0 left-0 right-0 m-auto">

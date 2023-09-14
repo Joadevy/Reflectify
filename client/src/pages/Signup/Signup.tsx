@@ -47,8 +47,6 @@ function SignUp() {
   }, [invalidData, error]);
 
   const handleSubmit = async (event: React.FormEvent<SignUpForm>) => {
-    if (loading) return;
-
     setLoading(true);
     event.preventDefault();
     const username = capitalize(event.currentTarget.username.value.trim());
@@ -87,8 +85,9 @@ function SignUp() {
     } catch (error) {
       setError(true);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -127,7 +126,7 @@ function SignUp() {
         <button
           type="submit"
           className=" bg-purple-600 rounded-md p-2 mt-2 + disabled:bg-gray-700"
-          disabled={disabled}
+          disabled={disabled || loading}
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>

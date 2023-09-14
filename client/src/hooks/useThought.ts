@@ -4,6 +4,7 @@ import api, { response } from "../api/thought";
 
 const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // username deberia venir de la sesion, estar en un contexto o algo asi
   const handleLike = async (reflectionId: string, add: boolean) => {
@@ -26,15 +27,18 @@ const useThought = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const fetchThoughts = async () => {
-      const response: response = await api.getThoughts();
+      const response: response = await api.getThoughts().finally(() => {
+        setLoading(false);
+      });
       setThoughts((response?.data ?? []) as Thought[]);
     };
 
     fetchThoughts();
   }, []);
 
-  return { thoughts, setThoughts, handleLike };
+  return { thoughts, setThoughts, handleLike, loading };
 };
 
 export default useThought;
