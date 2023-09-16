@@ -12,8 +12,6 @@ const ReflectionSchema = new Schema({
 
 const Reflection = mongoose.model("Reflection", ReflectionSchema);
 
-export default Reflection;
-
 export class ReflectionModel {
   static create = async ({ data }) => {
     const reflection = await Reflection.create({

@@ -1,19 +1,29 @@
-import express from "express";
+import { Router } from "express";
 
-import { ReflectionController } from "../controllers/reflectionController.js";
 import VerifyJWt from "../middlewares/VerifyJWT.js";
-export const indexRouter = express.Router();
+import { ReflectionController } from "../controllers/reflectionController.js";
 
-indexRouter.get("/", VerifyJWt, ReflectionController.getLast20);
-indexRouter.get(
-  "/:page/:limit",
-  VerifyJWt,
-  ReflectionController.getPageWithLimit,
-);
-indexRouter.post("/", VerifyJWt, ReflectionController.create);
-indexRouter.patch("/:reflectionId/like", VerifyJWt, ReflectionController.like);
-indexRouter.patch(
-  "/:reflectionId/dislike",
-  VerifyJWt,
-  ReflectionController.dislike,
-);
+export const createIndexRouter = ({ ReflectionModel }) => {
+  const indexRouter = Router();
+  const reflectionController = new ReflectionController({ ReflectionModel });
+
+  indexRouter.get("/", VerifyJWt, reflectionController.getLast20);
+  indexRouter.get(
+    "/:page/:limit",
+    VerifyJWt,
+    reflectionController.getPageWithLimit,
+  );
+  indexRouter.post("/", VerifyJWt, reflectionController.create);
+  indexRouter.patch(
+    "/:reflectionId/like",
+    VerifyJWt,
+    reflectionController.like,
+  );
+  indexRouter.patch(
+    "/:reflectionId/dislike",
+    VerifyJWt,
+    reflectionController.dislike,
+  );
+
+  return indexRouter;
+};

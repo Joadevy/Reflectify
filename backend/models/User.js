@@ -32,5 +32,3 @@ export class UserModel {
     return user;
   };
 }
-
-export default User;

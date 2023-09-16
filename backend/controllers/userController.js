@@ -3,11 +3,14 @@ import crypto from "node:crypto";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { UserModel } from "../models/User.js";
 import { validateUser } from "../models/ZodSchemas/User.js";
 
-export class userController {
-  static login = async (req, res) => {
+export class UserController {
+  constructor({ UserModel }) {
+    this.userModel = UserModel;
+  }
+
+  login = async (req, res) => {
     try {
       const { username, password } = req.body;
 
@@ -17,7 +20,7 @@ export class userController {
           message: "Missing required fields",
         });
 
-      const user = await UserModel.findByUsername({ username });
+      const user = await this.userModel.findByUsername({ username });
 
       if (!user)
         return res.status(400).json({
@@ -53,7 +56,7 @@ export class userController {
     }
   };
 
-  static create = async (req, res) => {
+  create = async (req, res) => {
     try {
       const userValidated = validateUser(req.body);
 
@@ -69,7 +72,7 @@ export class userController {
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const existUser = await UserModel.exists({ username });
+      const existUser = await this.userModel.exists({ username });
 
       if (existUser)
         return res.status(400).json({
@@ -77,7 +80,7 @@ export class userController {
           message: "Username already exists",
         });
 
-      const user = await UserModel.create({
+      const user = await this.userModel.create({
         data: {
           id: crypto.randomBytes(16).toString("hex"),
           username,
