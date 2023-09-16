@@ -37,6 +37,12 @@ export class ReflectionModel {
     return reflections;
   };
 
+  static count = async () => {
+    const count = await Reflection.countDocuments();
+
+    return count;
+  };
+
   static like = async ({ reflectionId, username }) => {
     const reflection = await Reflection.findOneAndUpdate(
       { id: reflectionId },

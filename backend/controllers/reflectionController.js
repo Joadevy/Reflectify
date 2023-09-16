@@ -51,9 +51,19 @@ export class ReflectionController {
         limit: req.params.limit ?? 7,
       });
 
+      const isLastPage = reflections.length < req.params.limit;
+
+      const info = {
+        page: req.params.page,
+        results: reflections.length,
+        total: await this.ReflectionModel.count(),
+        isLastPage,
+      };
+
       res.status(200).json({
         ok: true,
         data: reflections,
+        info,
       });
     } catch {
       res.status(500).json({ ok: false, message: "Error getting reflections" });
