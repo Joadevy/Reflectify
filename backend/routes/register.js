@@ -1,7 +1,12 @@
-import express from "express";
+import { Router } from "express";
 
-import { userController } from "../controllers/userController.js";
+import { UserController } from "../controllers/userController.js";
 
-export const registerRouter = express.Router();
+export const createRegisterRouter = ({ userModel }) => {
+  const userController = new UserController({ userModel });
+  const registerRouter = Router();
 
-registerRouter.post("/", userController.create);
+  registerRouter.post("/", userController.create);
+
+  return registerRouter;
+};

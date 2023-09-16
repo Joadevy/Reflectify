@@ -1,9 +1,13 @@
-import { ReflectionModel } from "../models/Reflection.js";
+// import { ReflectionModel } from "../models/Reflection.js";
 import { validateReflection } from "../models/ZodSchemas/Reflection.js";
 import { partialValidateUser } from "../models/ZodSchemas/User.js";
 
 export class ReflectionController {
-  static create = async (req, res) => {
+  constructor({ ReflectionModel }) {
+    this.ReflectionModel = ReflectionModel;
+  }
+
+  create = async (req, res) => {
     try {
       const validatedReflection = validateReflection(req.body);
 
@@ -13,7 +17,7 @@ export class ReflectionController {
           message: validatedReflection.error.message,
         });
 
-      const reflection = await ReflectionModel.create({
+      const reflection = await this.ReflectionModel.create({
         data: validatedReflection.data,
       });
 
@@ -27,9 +31,9 @@ export class ReflectionController {
     }
   };
 
-  static getLast20 = async (req, res) => {
+  getLast20 = async (req, res) => {
     try {
-      const reflections = await ReflectionModel.getLast20();
+      const reflections = await this.ReflectionModel.getLast20();
 
       res.status(200).json({
         ok: true,
@@ -40,9 +44,9 @@ export class ReflectionController {
     }
   };
 
-  static getPageWithLimit = async (req, res) => {
+  getPageWithLimit = async (req, res) => {
     try {
-      const reflections = await ReflectionModel.getPageWithLimit({
+      const reflections = await this.ReflectionModel.getPageWithLimit({
         page: req.params.page,
         limit: req.params.limit ?? 7,
       });
@@ -56,7 +60,7 @@ export class ReflectionController {
     }
   };
 
-  static like = async (req, res) => {
+  like = async (req, res) => {
     try {
       const validatedUser = partialValidateUser(req.body);
 
@@ -66,7 +70,7 @@ export class ReflectionController {
           message: validatedUser.error.message,
         });
 
-      const reflection = await ReflectionModel.like({
+      const reflection = await this.ReflectionModel.like({
         reflectionId: req.params.reflectionId,
         username: validatedUser.data.username,
       });
@@ -81,7 +85,7 @@ export class ReflectionController {
     }
   };
 
-  static dislike = async (req, res) => {
+  dislike = async (req, res) => {
     try {
       const validatedUser = partialValidateUser(req.body);
 
@@ -91,7 +95,7 @@ export class ReflectionController {
           message: validatedUser.error.message,
         });
 
-      const reflection = await ReflectionModel.dislike({
+      const reflection = await this.ReflectionModel.dislike({
         reflectionId: req.params.reflectionId,
         username: validatedUser.data.username,
       });
