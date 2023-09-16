@@ -6,8 +6,8 @@ import jwt from "jsonwebtoken";
 import { validateUser } from "../models/ZodSchemas/User.js";
 
 export class UserController {
-  constructor({ userModel }) {
-    this.userModel = userModel;
+  constructor({ UserModel }) {
+    this.userModel = UserModel;
   }
 
   login = async (req, res) => {

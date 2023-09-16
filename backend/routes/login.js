@@ -2,9 +2,9 @@ import { Router } from "express";
 
 import { UserController } from "../controllers/userController.js";
 
-export const createLoginRouter = ({ userModel }) => {
+export const createLoginRouter = ({ UserModel }) => {
   const loginRouter = Router();
-  const userController = new UserController({ userModel });
+  const userController = new UserController({ UserModel });
 
   loginRouter.post("/", userController.login);
 
