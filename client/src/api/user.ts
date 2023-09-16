@@ -1,3 +1,4 @@
+import { getBackendURL } from "../helpers/utils";
 import type { User } from "../types";
 
 export type response = {
@@ -16,7 +17,7 @@ export type authResponse = {
 };
 
 // backend url
-const baseUrl = "https://backend-zo2z.onrender.com";
+const baseUrl = getBackendURL();
 
 const api = {
   registerUser: async (user: User): Promise<authResponse> => {

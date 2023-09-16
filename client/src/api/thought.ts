@@ -1,3 +1,4 @@
+import { getBackendURL } from "../helpers/utils";
 import type { Thought, UserClientSide } from "../types";
 
 export type response = {
@@ -7,7 +8,7 @@ export type response = {
 };
 
 // backend url
-const baseUrl = "https://backend-zo2z.onrender.com";
+const baseUrl = getBackendURL();
 
 const api = {
   saveThought: async (thought: Thought): Promise<response> => {
