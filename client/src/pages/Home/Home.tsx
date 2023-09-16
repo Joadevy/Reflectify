@@ -83,8 +83,7 @@ function Home() {
         <>
           <ul
             className={
-              "flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto " +
-              (isLastPage ? "pb-14" : "pb-5")
+              "flex flex-col gap-5 px-4 mt-1 max-w-sm lg:max-w-md m-auto "
             }
           >
             {thoughts.map((thought) => (
@@ -96,8 +95,16 @@ function Home() {
             ))}
           </ul>
 
+          {isLastPage && (
+            <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-14">
+              <p className="text-center text-gray-500 text-sm italic">
+                No more reflections
+              </p>
+            </div>
+          )}
+
           {!isLastPage && (
-            <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+            <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-14">
               <button
                 className="bg-purple-800 border border-purple-400 rounded-md p-2 hover:opacity-80 transition-opacity"
                 onClick={addPage}
