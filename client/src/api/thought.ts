@@ -5,6 +5,12 @@ export type response = {
   ok: boolean;
   data?: Thought;
   message?: string;
+  info?: {
+    total: number;
+    results: number;
+    page: number;
+    isLastPage: boolean;
+  };
 };
 
 // backend url

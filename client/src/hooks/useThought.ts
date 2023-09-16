@@ -6,6 +6,7 @@ const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
   // username deberia venir de la sesion, estar en un contexto o algo asi
   const handleLike = async (reflectionId: string, add: boolean) => {
@@ -51,6 +52,10 @@ const useThought = () => {
       });
     const newThoughts = thoughts.concat(response?.data ?? []);
     setThoughts(newThoughts as Thought[]);
+
+    if (response.info && response.info.isLastPage) {
+      setIsLastPage(true);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +69,7 @@ const useThought = () => {
     loading,
     addPage,
     refreshThoughts,
+    isLastPage,
   };
 };
 

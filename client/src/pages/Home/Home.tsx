@@ -18,6 +18,7 @@ function Home() {
     loading,
     addPage,
     refreshThoughts,
+    isLastPage,
   } = useThought();
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
@@ -78,35 +79,42 @@ function Home() {
         </button>
       </form>
 
+      {thoughts.length > 0 && (
+        <>
+          <ul
+            className={
+              "flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto " +
+              (isLastPage ? "pb-14" : "pb-5")
+            }
+          >
+            {thoughts.map((thought) => (
+              <ThoughtItem
+                key={thought.id}
+                thought={thought}
+                handleLike={handleLike}
+              />
+            ))}
+          </ul>
+
+          {!isLastPage && (
+            <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+              <button
+                className="bg-purple-800 border border-purple-400 rounded-md p-2 hover:opacity-80 transition-opacity"
+                onClick={addPage}
+                disabled={loading}
+              >
+                Load more
+              </button>
+            </div>
+          )}
+        </>
+      )}
+
       {loading && (
         <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
           <p className="text-center text-gray-500 text-sm italic">
             Loading reflections...
           </p>
-        </div>
-      )}
-
-      {thoughts.length > 0 && (
-        <ul className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-5">
-          {thoughts.map((thought) => (
-            <ThoughtItem
-              key={thought.id}
-              thought={thought}
-              handleLike={handleLike}
-            />
-          ))}
-        </ul>
-      )}
-
-      {thoughts.length > 0 && (
-        <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
-          <button
-            className="bg-purple-800 border border-purple-400 rounded-md p-2 hover:opacity-80 transition-opacity"
-            onClick={addPage}
-            disabled={loading}
-          >
-            Load more
-          </button>
         </div>
       )}
 
