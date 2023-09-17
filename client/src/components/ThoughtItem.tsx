@@ -9,8 +9,6 @@ type Props = {
 
 const ThoughtItem = ({ thought, handleLike }: Props) => {
   const { user } = useUserContext();
-  // el defaultState tiene que venir de la base de datos, no del componente
-  // necesito mantener en la db los usuarios y quien le dio like a que thought
   const [liked, setLiked] = useState(thought.likes.includes(user.username));
   const isYourThought = user.username === thought.username;
 
