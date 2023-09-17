@@ -31,7 +31,7 @@ export class ReflectionModel {
   static getPageWithLimit = async ({ page, limit }) => {
     const reflections = await Reflection.find()
       .sort({ date: -1 })
-      .skip(page * limit)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     return reflections;
