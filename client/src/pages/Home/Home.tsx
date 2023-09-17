@@ -45,7 +45,7 @@ function Home() {
     const { ok } = await api.saveThought(thought);
     if (!ok) return;
 
-    refreshThoughts();
+    await refreshThoughts();
   };
 
   useEffect(() => {

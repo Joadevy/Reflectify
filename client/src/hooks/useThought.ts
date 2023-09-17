@@ -5,7 +5,7 @@ import api, { response } from "../api/thought";
 const useThought = () => {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
   // username deberia venir de la sesion, estar en un contexto o algo asi
