@@ -14,7 +14,6 @@ interface thoughtForm extends HTMLFormElement {
 function Home() {
   const lastReflectionRef = useRef<HTMLDivElement>(null);
   const entry = useIntersectionObserver(lastReflectionRef, {});
-  const isVisible = entry?.isIntersecting;
 
   const { user } = useUserContext();
   const {
@@ -49,8 +48,10 @@ function Home() {
   };
 
   useEffect(() => {
+    const isVisible = entry?.isIntersecting;
+
     if (isVisible) addPage();
-  }, [isVisible]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [entry?.isIntersecting]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className="min-h-screen relative">
