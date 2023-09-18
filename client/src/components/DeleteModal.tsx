@@ -1,9 +1,18 @@
+import { useState } from "react";
+
 type Props = {
   cancelOperation: () => void;
   acceptOperation: () => void;
 };
 
 const DeleteModal = ({ cancelOperation, acceptOperation }: Props) => {
+  const [deleteTriggered, setDeleteTriggered] = useState(false);
+
+  const handleDelete = () => {
+    setDeleteTriggered(true);
+    acceptOperation();
+  };
+
   return (
     <>
       <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -23,7 +32,8 @@ const DeleteModal = ({ cancelOperation, acceptOperation }: Props) => {
             </button>
             <button
               className="bg-purple-800 border border-purple-400 rounded-md px-2 py-1 hover:opacity-80 transition-opacity"
-              onClick={() => acceptOperation()}
+              onClick={handleDelete}
+              disabled={deleteTriggered}
             >
               Delete
             </button>
