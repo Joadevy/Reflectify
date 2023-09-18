@@ -1,10 +1,9 @@
 import ThoughtItem from "../../components/ThoughtItem";
-import useThought from "../../hooks/useThought";
 import { useUserContext } from "../../hooks/useUser";
+import useIntersection from "../../hooks/UseIntersection";
+import useThought from "../../hooks/useThought";
 import InputFormItem from "../../components/InputFormItem";
 import Header from "../../components/Header";
-import api from "../../api/thought";
-import { useCallback, useRef } from "react";
 
 interface thoughtForm extends HTMLFormElement {
   thought: HTMLInputElement;
@@ -16,21 +15,13 @@ function Home() {
     thoughts,
     handleLike,
     loading,
+    publishing,
     addPage,
-    refreshThoughts,
+    handleNewThought,
     isLastPage,
   } = useThought();
 
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastReflection = useCallback((node: Element | null) => {
-    if (!node) return;
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) addPage();
-    });
-    observer.current.observe(node);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const { lastReflection } = useIntersection({ loading, addPage });
 
   const handleSubmit = async (event: React.FormEvent<thoughtForm>) => {
     event.preventDefault();
@@ -48,10 +39,7 @@ function Home() {
       likes: [],
     };
 
-    const { ok } = await api.saveThought(thought);
-    if (!ok) return;
-
-    await refreshThoughts();
+    await handleNewThought(thought);
   };
 
   return (
@@ -88,6 +76,13 @@ function Home() {
 
       {thoughts.length > 0 && (
         <>
+          {publishing && (
+            <div className="flex flex-col gap-5 p-4 mt-1 max-w-sm lg:max-w-md m-auto pb-10">
+              <p className="text-center text-gray-500 text-sm italic">
+                Publishing reflection...
+              </p>
+            </div>
+          )}
           <ul
             className={
               "flex flex-col gap-5 px-4 mt-1 max-w-sm lg:max-w-md m-auto "

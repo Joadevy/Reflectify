@@ -7,6 +7,7 @@ const useThought = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
+  const [publishing, setPublishing] = useState(false);
 
   // username deberia venir de la sesion, estar en un contexto o algo asi
   const handleLike = async (reflectionId: string, add: boolean) => {
@@ -32,13 +33,22 @@ const useThought = () => {
     setPage(page + 1);
   };
 
+  const handleNewThought = async (newThought: Thought) => {
+    setPublishing(true);
+    try {
+      const { ok } = await api.saveThought(newThought);
+      if (!ok) throw new Error("Error saving thought");
+
+      await refreshThoughts();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPublishing(false);
+    }
+  };
+
   const refreshThoughts = async () => {
-    setLoading(true);
-    const response: response = await api
-      .getThoughtByPageAndLimit(page)
-      .finally(() => {
-        setLoading(false);
-      });
+    const response: response = await api.getThoughtByPageAndLimit(page);
     const newThoughts = response?.data ?? [];
     setThoughts(newThoughts as Thought[]);
   };
@@ -67,8 +77,9 @@ const useThought = () => {
     setThoughts,
     handleLike,
     loading,
+    publishing,
     addPage,
-    refreshThoughts,
+    handleNewThought,
     isLastPage,
   };
 };
