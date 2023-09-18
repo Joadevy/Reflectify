@@ -16,6 +16,7 @@ function Home() {
     handleLike,
     loading,
     publishing,
+    handleDelete,
     addPage,
     handleNewThought,
     isLastPage,
@@ -93,7 +94,11 @@ function Home() {
                 ref={index === thoughts.length - 2 ? lastReflection : null}
                 key={thought.id}
               >
-                <ThoughtItem thought={thought} handleLike={handleLike} />
+                <ThoughtItem
+                  thought={thought}
+                  handleLike={handleLike}
+                  handleDelete={handleDelete}
+                />
               </div>
             ))}
           </ul>

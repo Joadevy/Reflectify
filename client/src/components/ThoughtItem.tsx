@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Thought } from "../types";
 import { useUserContext } from "../hooks/useUser";
+import DeleteModal from "./DeleteModal";
 
 type Props = {
   thought: Thought;
   handleLike: (thoughtId: string, add: boolean) => void;
+  handleDelete: (thoughtId: string) => void;
 };
 
-const ThoughtItem = ({ thought, handleLike }: Props) => {
+const ThoughtItem = ({ thought, handleLike, handleDelete }: Props) => {
+  const [deleted, setDeleted] = useState(false);
   const { user } = useUserContext();
   const [liked, setLiked] = useState(thought.likes.includes(user.username));
   const isYourThought = user.username === thought.username;
@@ -19,7 +22,19 @@ const ThoughtItem = ({ thought, handleLike }: Props) => {
   };
 
   return (
-    <li className="border border-purple-400 rounded-md p-2 shadow-[0_0_10px_#8e24aa]">
+    <li className="border border-purple-400 rounded-md p-2 shadow-[0_0_10px_#8e24aa] relative">
+      {isYourThought ? (
+        <button className="absolute right-2" onClick={() => setDeleted(true)}>
+          <p className="text-red-300 hover:opacity-75">⌫</p>
+        </button>
+      ) : null}
+
+      {deleted ? (
+        <DeleteModal
+          cancelOperation={() => setDeleted(false)}
+          acceptOperation={() => handleDelete(thought.id)}
+        ></DeleteModal>
+      ) : null}
       <header>
         <p>
           ✦{" "}

@@ -29,6 +29,16 @@ const useThought = () => {
     }
   };
 
+  const handleDelete = async (reflectionId: string) => {
+    const response = await api.deleteThought(reflectionId);
+    if (response.ok) {
+      const updatedThoughts = thoughts.filter(
+        (thought) => thought.id !== reflectionId,
+      );
+      setThoughts(updatedThoughts);
+    }
+  };
+
   const addPage = async () => {
     setPage(page + 1);
   };
@@ -79,6 +89,7 @@ const useThought = () => {
     loading,
     publishing,
     addPage,
+    handleDelete,
     handleNewThought,
     isLastPage,
   };

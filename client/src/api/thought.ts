@@ -39,6 +39,26 @@ const api = {
       };
     }
   },
+  deleteThought: async (thoughtId: string): Promise<response> => {
+    try {
+      const userData: UserClientSide = JSON.parse(
+        sessionStorage.getItem("user")!,
+      );
+      const resp: response = await fetch(`${baseUrl}/${thoughtId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userData.accessToken}`,
+          body: JSON.stringify({ username: userData.username }),
+        },
+      }).then((res) => res.json());
+      return resp;
+    } catch (error) {
+      return {
+        ok: false,
+        message: "Error deleting thought: " + error,
+      };
+    }
+  },
   getThoughts: async (): Promise<response> => {
     try {
       const userData: UserClientSide = JSON.parse(
