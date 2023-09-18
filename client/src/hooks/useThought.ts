@@ -58,7 +58,7 @@ const useThought = () => {
   };
 
   const refreshThoughts = async () => {
-    const response: response = await api.getThoughtByPageAndLimit(page);
+    const response: response = await api.getThoughtByPageAndLimit(1);
     const newThoughts = response?.data ?? [];
     setThoughts(newThoughts as Thought[]);
   };
