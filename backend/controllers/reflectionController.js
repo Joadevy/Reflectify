@@ -1,4 +1,3 @@
-// import { ReflectionModel } from "../models/Reflection.js";
 import { validateReflection } from "../models/ZodSchemas/Reflection.js";
 import { partialValidateUser } from "../models/ZodSchemas/User.js";
 
@@ -28,6 +27,35 @@ export class ReflectionController {
       });
     } catch (error) {
       res.status(500).json({ ok: false, message: "Error creating reflection" });
+    }
+  };
+
+  delete = async (req, res) => {
+    try {
+      const validatedUser = partialValidateUser(req.body);
+
+      const isReflectionOfUser = await this.ReflectionModel.isReflectionOfUser({
+        reflectionId: req.params.reflectionId,
+        username: validatedUser.data.username,
+      });
+
+      if (!isReflectionOfUser)
+        return res.status(400).json({
+          ok: false,
+          message: "Reflection does not belong to user",
+        });
+
+      const reflection = await this.ReflectionModel.delete({
+        reflectionId: req.params.reflectionId,
+      });
+
+      res.status(200).json({
+        ok: true,
+        message: "Reflection deleted successfully",
+        data: reflection,
+      });
+    } catch (error) {
+      res.status(500).json({ ok: false, message: "Error deleting reflection" });
     }
   };
 

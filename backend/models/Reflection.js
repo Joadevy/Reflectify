@@ -21,6 +21,21 @@ export class ReflectionModel {
     return reflection;
   };
 
+  static delete = async ({ reflectionId }) => {
+    const reflection = await Reflection.findOneAndDelete({ id: reflectionId });
+
+    return reflection;
+  };
+
+  static isReflectionOfUser = async ({ reflectionId, username }) => {
+    const reflection = await Reflection.findOne({
+      id: reflectionId,
+      username,
+    });
+
+    return reflection;
+  };
+
   static getLast20 = async () => {
     // Find 20 reflections by date, descending order (newest first)
     const reflections = await Reflection.find().sort({ date: -1 }).limit(20);

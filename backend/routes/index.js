@@ -24,6 +24,7 @@ export const createIndexRouter = ({ ReflectionModel }) => {
     VerifyJWt,
     reflectionController.dislike,
   );
+  indexRouter.delete("/:reflectionId", VerifyJWt, reflectionController.delete);
 
   return indexRouter;
 };
